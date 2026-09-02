@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-02
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -534,6 +534,8 @@ In the session picker, press **`s`** to cycle the sort order: relevance, last us
 ```
 
 With the sidebar open, you can see all running and backgrounded sessions in a split-view panel alongside your active conversation. Sessions are listed with their name, working directory, and running status. Click or keyboard-navigate (arrow keys, **n** to spawn, **x** twice to close) to switch sessions instantly. Use this when you regularly juggle several parallel workstreams and want a persistent view of all your sessions rather than accessing them through the `/resume` picker.
+
+*(v1.0.83+)* The split Sessions sidebar supports **Recent**, **Created**, **Name**, and classic **None** sort orders, independent of the `/resume` picker's own sort cycling. Your chosen order is saved and restored across CLI restarts.
 
 The `/rewind` command opens a timeline picker that lets you roll back the conversation to any earlier point in history. You can also trigger it by pressing **double-Esc**:
 
