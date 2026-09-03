@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-03
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -65,8 +65,19 @@ Each session the Copilot app creates runs in its own **git worktree**—a real, 
 - No manual branch juggling or cleanup required—the app handles it all
 - You can pick up a session from any device, on any worktree
 - A **Worktree location** setting in Settings > Sessions lets you customize where new worktrees are created, using a path template with repository, branch, and name placeholders
+- *(v1.1.13+)* A single checkbox lets you toggle worktrees on or off for **all repositories at once** when starting a new session across a repository collection, instead of configuring each repository individually
 
 This makes it easy to dispatch multiple agents and trust they won't interfere with each other.
+
+### Customize
+
+The **Customize** view is your one-stop hub for browsing and managing everything that extends the Copilot app: plugins, skills, MCP servers, and canvases. *(v1.1.13+, available to everyone)*
+
+- Browse **Customize > Featured** for curated integrations — including **Azure DevOps**, which you can install and open directly from this tab
+- Manage everything you've already installed from **Customize > Installed**, with consistent icons and source labels across skills, plugins, canvases, agent extensions, and MCP servers
+- Create, edit, or remove your own **personal skills** directly from Customize, without leaving the app
+
+This gives you a single place to discover new capabilities and manage what's already configured, instead of hunting across settings menus.
 
 ### Running in the Background
 
@@ -94,6 +105,8 @@ For a hands-on guide to building canvases with `/create-canvas`, see [Working wi
 You control the automation level—decide whether Agent Merge should just run CI, address feedback, or go all the way to merging. It's a way to let Copilot handle the tedious parts of the review and merge process.
 
 Agent Merge also understands **stacked pull requests**: it shows a stack summary in the merge drawer with the pull requests that will be included, and lets you merge an entire stack together instead of merging each PR one at a time.
+
+> **Also in VS Code (Preview)**: Starting with VS Code 1.136, **Agent Merge (Preview)** is available directly in the editor, letting you resolve review feedback, failed checks, and merge conflicts on a pull request without switching to the Copilot app. See the [VS Code release notes](https://code.visualstudio.com/updates) for details.
 
 ### Requesting Code Reviews
 

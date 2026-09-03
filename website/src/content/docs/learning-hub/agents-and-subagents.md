@@ -3,7 +3,7 @@ title: 'Agents and Subagents'
 description: 'Learn how delegated subagents differ from primary agents, when to use them, and how to launch them in VS Code and Copilot CLI.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
+lastUpdated: 2026-09-03
 estimatedReadingTime: '9 minutes'
 tags:
   - agents
@@ -108,6 +108,12 @@ Then summarize the findings into one recommendation.
 ### 4. Know the nesting rule
 
 By default, subagents do not keep spawning additional subagents. In VS Code, recursive delegation is controlled by the `chat.subagents.allowInvocationsFromSubagents` setting, which is off by default.
+
+### Managing parallel sessions and chats
+
+*(VS Code 1.136+)* When you delegate independent work to multiple chats, each one gets a meaningful title and appears in a **session hierarchy** in the Agents window — chats are nested under their parent session, so you can tell at a glance which ones need your attention (pending approvals, status, etc.) without scrolling through unrelated sessions. You can expand or collapse the hierarchy and open, rename, move, or delete individual chats from the tree.
+
+*(VS Code 1.136+, Experimental)* Copilot and Claude agent sessions in the editor window's Chat view now support **multi-root workspaces** (enable with `chat.agentHost.copilotAgent.multiRootEnabled` / `chat.agentHost.claudeAgent.multiRootEnabled`). Agents can also resolve a workspace by project name instead of requiring a full path — so a request like "run this in the vscode workspace" works even across multiple folders.
 
 ## Launch subagents in Copilot CLI
 
