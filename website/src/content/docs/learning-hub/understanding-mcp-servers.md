@@ -3,7 +3,7 @@ title: 'Understanding MCP Servers'
 description: 'Learn how Model Context Protocol servers extend GitHub Copilot with access to external tools, databases, and APIs.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-04
 estimatedReadingTime: '8 minutes'
 tags:
   - mcp
@@ -214,6 +214,8 @@ Some MCP servers require authentication to connect to protected resources. GitHu
 - **`${input:variableName}` prompts**: VS Code will prompt for these values at runtime, keeping secrets out of committed files.
 
 > **Tip**: If your MCP server uses OAuth with Dynamic Client Registration but hosts its authorization metadata at a non-standard URL (as some enterprise servers like Atlassian Rovo do), Copilot CLI handles this automatically.
+
+- **Client ID Metadata Document (CIMD)** *(v1.0.83+)*: Copilot CLI supports CIMD for MCP OAuth sign-in, an alternative to Dynamic Client Registration where the OAuth client identifies itself via a metadata document URL instead of registering with the authorization server ahead of time. This broadens compatibility with MCP servers and identity providers that support the CIMD approach.
 
 ## How Agents Use MCP Tools
 

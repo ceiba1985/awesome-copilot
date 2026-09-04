@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-04
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -534,6 +534,10 @@ In the session picker, press **`s`** to cycle the sort order: relevance, last us
 ```
 
 With the sidebar open, you can see all running and backgrounded sessions in a split-view panel alongside your active conversation. Sessions are listed with their name, working directory, and running status. Click or keyboard-navigate (arrow keys, **n** to spawn, **x** twice to close) to switch sessions instantly. Use this when you regularly juggle several parallel workstreams and want a persistent view of all your sessions rather than accessing them through the `/resume` picker.
+
+**Sidebar sorting** *(v1.0.83+)*: The Sessions Sidebar now supports **Recent**, **Created**, and **Name** sort orders alongside the classic **None** ordering, and remembers your chosen order across CLI restarts.
+
+**Windows 11 taskbar integration** *(v1.0.83+)*: On Windows 11, running Copilot CLI sessions surface in the taskbar with live hover status cards, so you can check on a session's progress without switching to its terminal window.
 
 The `/rewind` command opens a timeline picker that lets you roll back the conversation to any earlier point in history. You can also trigger it by pressing **double-Esc**:
 
