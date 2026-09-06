@@ -73,6 +73,18 @@ tools: ['codebase', 'terminal', 'github']
 
 **model** (recommended): The AI model that powers the agent. Choose based on the complexity of the task—use more capable models for nuanced reasoning.
 
+> **Model fallback lists (v1.0.83+)**: `model` now accepts a list of models instead of a single value. The CLI tries each entry in order and uses the first one available to you—useful when a preferred model is rate-limited or not enabled for your account. Pair it with `model-policy: required` to keep the agent pinned to that list even if the user changes models mid-session:
+>
+> ```yaml
+> ---
+> name: 'Security Reviewer'
+> description: 'Expert security auditor that reviews code for OWASP vulnerabilities'
+> model: ['Claude Sonnet 4.5', 'GPT-5', 'Claude Sonnet 4']
+> model-policy: required
+> tools: ['codebase', 'terminal', 'github']
+> ---
+> ```
+
 **reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`:
 
 ```yaml
