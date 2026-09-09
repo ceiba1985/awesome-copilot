@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-09
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -56,6 +56,12 @@ The Copilot app includes built-in automations that can run scheduled tasks for y
 
 Automations run in the context of a repository, so they can access issues, pull requests, and code. You can also choose whether they run as a plan, an interactive session, or on autopilot.
 
+> **New (v1.1.15+): the `/goal` command**: Set a persistent objective for autopilot to work towards across a local session with `/goal`. Unlike a single prompt, a goal stays active as autopilot's guiding target through multiple turns, and the collapsed autopilot panel shows your last prompt as the inferred objective so you can track progress at a glance.
+
+### Editing Files Directly in More Workspace Types
+
+*(v1.1.15+)* Editing and saving files—including whole-file diff changes—now works directly from the app in **WSL**, **Direct**, and **Mission Control** workspaces, not just standard git worktree sessions, with conflict detection if a file changes remotely before you save.
+
 ### Isolated Worktrees for Parallel Work
 
 Each session the Copilot app creates runs in its own **git worktree**—a real, isolated copy of your branch. This is critical for parallel agent work:
@@ -98,6 +104,10 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 ### Requesting Code Reviews
 
 From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+
+### Attaching Media to Pull Requests and Installing MCP Servers via Deep Link
+
+*(v1.1.15+)* You can attach images and videos to pull request descriptions by pasting, dragging, or selecting files, alongside the existing link action. The app also supports installing **MCP servers via a deep link**, which opens a prefilled review form so you can confirm the server's details before it's added—useful for sharing a one-click MCP setup link with teammates instead of walking them through manual configuration.
 
 ## Who is the Copilot app for?
 
