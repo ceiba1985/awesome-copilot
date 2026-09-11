@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-11
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -129,6 +129,8 @@ While the CLI is powerful, some developers prefer a visual interface for common 
 | **Copilot App** | Directing parallel agents, visual workflow | Control center for agentic development, multi-agent management |
 
 The Copilot app complements these experiences—you'll still use VS Code for coding, the CLI for automation, and GitHub.com for collaboration. The Copilot app fills a specific gap: managing multiple agents in parallel with a unified interface.
+
+> **Note (VS Code 1.137+)**: VS Code's own **Agents window** has been gaining similar multi-agent management capabilities — including an **Agent Host** that runs agent harnesses (including a Copilot SDK-powered agent) in a dedicated process reachable from multiple VS Code windows, and a Preview **Automations** feature for scheduling recurring agent tasks on an hourly, daily, or weekly cadence. If you primarily live in VS Code, these overlap with some of what the standalone Copilot app offers; choose whichever surface fits your workflow. See the [VS Code release notes](https://code.visualstudio.com/updates) for details.
 
 ## Getting Started
 

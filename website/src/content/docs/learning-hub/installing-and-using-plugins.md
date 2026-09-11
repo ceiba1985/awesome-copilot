@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-11
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -252,6 +252,10 @@ This opens an interactive list where each installed plugin and its components ar
 *(v1.0.81+)* `/plugin` also flags installed plugins and marketplaces that have a newer version available upstream, and offers an **Update** action to pull the latest version directly from the dashboard.
 
 > **Note**: Enabling and disabling hooks and LSP servers individually is temporarily unavailable following the `/plugins` removal — those toggles previously lived only in the retired dashboard.
+
+> **GA (v1.0.81+)**: The plugins dashboard is now available to everyone — run `/plugin`, `/mcp`, or `/skills` to open it. If you need to opt out, set `PLUGINS_DASHBOARD=false` to revert to the legacy `copilot plugins` command.
+
+> **Improved labeling (v1.0.83+)**: MCP servers contributed by a plugin are no longer generically labeled "User" in the `/mcp` dashboard. A server shipped by a bundled (built-in) plugin is now shown as **built-in** and names the plugin it comes from, making it easier to tell which plugin owns which server.
 
 ### Loading Plugins from a Local Directory
 
