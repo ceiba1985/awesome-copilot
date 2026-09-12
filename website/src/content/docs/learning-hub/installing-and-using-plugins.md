@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-12
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -240,6 +240,8 @@ copilot plugin uninstall my-plugin
 ### Enabling and Disabling Plugin Components
 
 > **Breaking change (v1.0.81+)**: The `/plugins` command has been **removed**. Its functionality moved to dedicated commands: `/plugin` (plugin dashboard), `/mcp` (MCP servers), and `/skills` (skills), with `/subagents` for custom agents and `/instructions` for instructions.
+
+> **Plugins dashboard rolled out to everyone** *(v1.0.81+)*: The plugins dashboard — `/plugin`, `/mcp`, and `/skills` — is now available to all users by default. Set the `PLUGINS_DASHBOARD=false` environment variable to opt out of the dashboard and the `copilot plugins` command if you prefer the previous behavior.
 
 Run `/plugin` (or `copilot plugin list` in non-interactive mode) to see **enable/disable toggles** for individual plugin components. You can turn off specific agents, instructions, hooks, LSP servers, or entire plugins without uninstalling them:
 
