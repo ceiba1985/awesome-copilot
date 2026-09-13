@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-13
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -84,6 +84,20 @@ reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
 ---
 ```
+
+**model-policy** *(v1.0.83+)*: Combined with a list of models in `model`, `model-policy: required` keeps model changes restricted to that list. This lets you pin an agent to one or more approved models — for example, a compliance-sensitive agent — while still giving it a fallback if the preferred model becomes unavailable:
+
+```yaml
+---
+name: 'Compliance Reviewer'
+description: 'Reviews changes for regulatory compliance requirements'
+model: ['Claude Sonnet 4', 'GPT-5']
+model-policy: required
+tools: ['codebase', 'github']
+---
+```
+
+When `model` lists several models, Copilot tries them in order until one is available to you. Without `model-policy: required`, users can still switch to any other model manually during the session; setting the policy keeps the session locked to the listed models.
 
 **tools** (recommended): An array of built-in tools and MCP servers the agent can access. Common tools include:
 

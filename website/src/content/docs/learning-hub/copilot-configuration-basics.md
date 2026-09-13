@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-13
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -832,6 +832,8 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+> **Breaking change (v1.0.83)**: On macOS and Linux, sandboxed commands can no longer reach services running on your machine, including a local server that the sandboxed command itself starts on `127.0.0.1`. If your workflow runs test suites or dev servers that bind a local port from inside a sandboxed session, those commands will now fail. Turn on **Allow local network** in `/sandbox` to restore access to localhost services. Linux sandboxing also now requires `slirp4netns`, `nsenter`, `iptables`, `ip6tables`, `iptables-restore`, and `ip6tables-restore` on `PATH` — install them if sandboxed commands start failing to launch.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
