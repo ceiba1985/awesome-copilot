@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-14
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -15,6 +15,7 @@ relatedArticles:
   - ./using-copilot-coding-agent.md
   - ./agentic-workflows.md
   - ./what-are-agents-skills-instructions.md
+  - ./vs-code-agents-window.md
 prerequisites:
   - Understanding of GitHub Copilot agents
   - Copilot Pro, Pro+, Business, or Enterprise plan
@@ -81,6 +82,14 @@ Closing the app's main window keeps it running in the background instead of quit
 - This makes it easy to see exactly what an agent is doing and step in when needed
 
 For a hands-on guide to building canvases with `/create-canvas`, see [Working with Canvas Extensions](../working-with-canvas-extensions/).
+
+### Files Tab and Generated Artifacts
+
+The **Files** tab shows repository files alongside artifacts an agent generates during a session, such as Markdown documents. A source switcher lets you move between generated artifacts and added file/folder sources without leaving the tab, and you can promote a generated artifact into the repository directly from there.
+
+### Goal Pill
+
+The **Goal pill** in the message composer shows live status for an active `/goal` or `/autopilot` objective — whether it's Active, Paused, or Done — and expands to show the objective text, a completion summary, pause reason, turn count, and AI Credits usage. This gives you an at-a-glance view of long-running autonomous work without opening a separate status view.
 
 ### Agent Merge
 

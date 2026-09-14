@@ -10,6 +10,8 @@ New to GitHub Copilot? Start here to understand the tools available to you.
 
 **Desktop App**: Explore the [GitHub Copilot app](github-copilot-app/) — a control center for directing multiple agents in parallel. Perfect for agent-native development and parallel work with isolated worktrees.
 
+**VS Code**: See what's new in the [VS Code Agents Window](vs-code-agents-window/) — scheduled automations, GitHub issue/PR integration, Voice Mode, and the new agent host architecture.
+
 **Automations**: Start with [Using Automations in the GitHub Copilot app](using-automations-in-copilot-app/) for templates, setup guidance, and real examples.
 
 **Canvases**: Learn [Working with Canvas Extensions](working-with-canvas-extensions/) to create and evolve interactive canvases with `/create-canvas`.

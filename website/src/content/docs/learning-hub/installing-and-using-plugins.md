@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-14
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -251,7 +251,7 @@ This opens an interactive list where each installed plugin and its components ar
 
 *(v1.0.81+)* `/plugin` also flags installed plugins and marketplaces that have a newer version available upstream, and offers an **Update** action to pull the latest version directly from the dashboard.
 
-> **Note**: Enabling and disabling hooks and LSP servers individually is temporarily unavailable following the `/plugins` removal — those toggles previously lived only in the retired dashboard.
+> **Note (v1.0.84+)**: Enabling and disabling hooks and LSP servers individually is available again — `enable` and `disable` subcommands now work directly on `copilot plugin`, `copilot mcp`, and `copilot skill`, replacing the earlier `copilot plugins enable/disable --plugin|--mcp|--skill` flags. Use `copilot skill add [--project]` to add a skill (replacing `copilot plugins install --skill [--scope project]` — the `--scope` spelling has been removed). List commands (`copilot plugin list`, `copilot plugin marketplace list`, `copilot plugin marketplace browse`) now support a `--json` flag for scripting, and `copilot plugins list --json` emits a flat array of plugins instead of the previous `{ plugins, errors }` object.
 
 ### Loading Plugins from a Local Directory
 

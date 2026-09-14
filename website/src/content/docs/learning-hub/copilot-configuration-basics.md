@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-14
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -490,6 +490,12 @@ The settings dialog supports search — type to filter settings by name. Changes
 
 These flags mirror the **Repo** and **Repo (local)** scope tabs available in the `/settings` dashboard (v1.0.71+), making it easier to manage per-repository vs. user-global configuration without ambiguity. In v1.0.71+, the `/settings` dashboard also shows **Repo** and **Repo (local)** tabs alongside the existing user-level view, giving you a unified place to see which settings are applied at each layer.
 
+**`/config` (v1.0.84+)**: Opens a dedicated sidebar configuration screen — a quicker way to browse and edit settings without the full `/settings` dialog flow.
+
+**Vim mode (v1.0.84+)**: Vim mode is now available to everyone. Enable it with `/vim` or by setting `editorMode` to `vim` in your config, giving you modal editing (normal/insert modes) in the prompt composer, with the current mode shown while you type.
+
+**Plugin component listing (v1.0.84+)**: `copilot instruction list` and `copilot lsp list` replace the older `copilot plugins list --kind instruction` and `--kind lsp` flags, giving each plugin component kind its own dedicated listing command, consistent with `copilot mcp list` and `copilot skill list`.
+
 GitHub Copilot CLI has two commands for managing session state, with distinct behaviours:
 
 | Command | Behaviour |
@@ -585,9 +591,9 @@ In v1.0.66+, you can pass a task description to `/worktree` to name the branch f
 
 This creates a branch named from your task description and begins working on it immediately, making it easy to spin up parallel work without stopping to think of a branch name.
 
-After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the experimental `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins.
+After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins. As of v1.0.84+, `/worktree`, `/move`, and `--worktree` no longer require experimental mode — they're available to everyone by default.
 
-The `/new-worktree` command *(v1.0.78+, experimental)* creates a new worktree and starts a **fresh conversation** in it — without inheriting the current session's history. This is useful when you want a completely clean slate for a new task in a parallel branch:
+The `/new-worktree` command *(v1.0.78+)* creates a new worktree and starts a **fresh conversation** in it — without inheriting the current session's history. This is useful when you want a completely clean slate for a new task in a parallel branch:
 
 ```
 /new-worktree my-feature-branch
@@ -834,6 +840,8 @@ These flags apply only to the current invocation — your persisted sandbox pref
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
+
+**Sandbox network host allow/deny rules (v1.0.84+)**: `/sandbox` now supports per-host network allow/deny rules without replacing your configured upstream proxy, giving finer-grained control over which hosts sandboxed commands can reach. Use `/sandbox policy` to review the effective sandbox paths, denials, and network access together, and `/sandbox disable` to turn the sandbox off for the current session when your organization's policy allows a bypass.
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
 

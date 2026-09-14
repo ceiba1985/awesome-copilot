@@ -3,7 +3,7 @@ title: "Using Automations in the GitHub Copilot app"
 description: "A practical guide to getting started with Copilot app automations using templates, iterative refinement, and real-world examples."
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-06-17
+lastUpdated: 2026-09-14
 estimatedReadingTime: "10 minutes"
 tags:
   - copilot-app
@@ -14,6 +14,7 @@ relatedArticles:
   - ./github-copilot-app.md
   - ./agentic-workflows.md
   - ./using-copilot-coding-agent.md
+  - ./vs-code-agents-window.md
 prerequisites:
   - Access to the GitHub Copilot app
   - A connected repository
