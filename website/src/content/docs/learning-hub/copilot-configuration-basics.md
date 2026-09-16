@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-16
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -438,6 +438,10 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+> **Vim mode (v1.0.85+)**: Modal editing is now available to everyone in the composer. Turn it on with `/vim`, or set `"editorMode": "vim"` in your config, to get familiar `hjkl`-style navigation and mode-aware editing while typing prompts. The active mode is shown while you type.
+
+> **`/config` sidebar (v1.0.85+)**: Run `/config` to open a sidebar configuration screen inside the CLI for browsing and editing settings, complementing the existing `/settings` dialog.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -834,6 +838,16 @@ These flags apply only to the current invocation — your persisted sandbox pref
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
+
+**Sandbox network host allow/deny rules** *(v1.0.85+)*: `/sandbox` now supports per-host network allow/deny rules in addition to your configured upstream proxy, giving finer-grained control over which destinations a sandboxed session can reach without replacing the proxy configuration entirely.
+
+**Plugin CLI subcommand renames** *(v1.0.85+)*: Several `copilot plugins` cross-kind flags and subcommands were replaced with dedicated, kind-specific commands:
+
+- `copilot instruction list` and `copilot lsp list` replace `copilot plugins list --kind instruction` and `--kind lsp`.
+- `copilot plugin enable`/`copilot plugin disable`, `copilot mcp enable`/`disable`, and `copilot skill enable`/`disable` replace `copilot plugins enable/disable --plugin|--mcp|--skill`.
+- `--json` is now supported on `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse`.
+
+These changes continue the migration away from the retired cross-kind `copilot plugins` command toward the dedicated `copilot plugin`, `copilot mcp`, `copilot skill`, `copilot instruction`, and `copilot lsp` subcommands introduced in v1.0.81.
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
 
