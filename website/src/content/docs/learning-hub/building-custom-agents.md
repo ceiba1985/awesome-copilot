@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-17
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -81,6 +81,18 @@ name: 'Security Reviewer'
 description: 'Thorough security audit for OWASP vulnerabilities'
 model: Claude Sonnet 4
 reasoningEffort: high
+tools: ['codebase', 'terminal', 'github']
+---
+```
+
+**include-custom-instructions** *(v1.0.86+)*: Set to `true` to have the agent automatically pick up your repository's instruction files (`AGENTS.md`, `copilot-instructions.md`, `CLAUDE.md`) in addition to its own persona. This is useful when an agent should still follow your team's general coding standards on top of its specialized behavior:
+
+```yaml
+---
+name: 'Security Reviewer'
+description: 'Expert security auditor that reviews code for OWASP vulnerabilities'
+model: Claude Sonnet 4
+include-custom-instructions: true
 tools: ['codebase', 'terminal', 'github']
 ---
 ```
@@ -254,7 +266,7 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 
 | Scenario | Recommended Model |
 |----------|-------------------|
-| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
+| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)*, GPT-6 Astra *(v1.0.85+)* |
 | Complex reasoning, analysis | Claude Sonnet 4 |
 | Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
 | Code generation, refactoring | GPT-4.1 |
