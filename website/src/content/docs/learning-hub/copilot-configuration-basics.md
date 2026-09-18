@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-18
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -891,6 +891,22 @@ echo 'source ~/.copilot-completion.bash' >> ~/.bashrc
 ```
 
 > **Tip**: Reload your shell (`source ~/.bashrc` or open a new terminal) after adding the completion script for changes to take effect.
+
+### Recent CLI Additions (v1.0.85+)
+
+**Vim mode** *(v1.0.85+)*: Turn on modal editing in the composer with `/vim`, or set `editorMode` to `vim` in `/settings` to enable it by default for every session. The current mode (normal/insert) is shown while you type, so you always know which editing mode is active.
+
+**`/config` sidebar** *(v1.0.85+)*: Run `/config` to open a sidebar configuration screen directly in the CLI instead of hand-editing `config.json`. This is a faster way to review and change settings like the default model, reasoning effort, and editor mode without leaving your session.
+
+**Sandbox network host allow/deny rules** *(v1.0.85+)*: `/sandbox` now supports adding specific network host allow/deny rules without replacing your configured upstream proxy. This lets you permit or block individual hosts (for example, an internal API) while keeping your existing proxy configuration intact.
+
+**Session and memory import** *(v1.0.85+)*: New import commands support the semantic JSONL interchange format for sessions and memory, making it easier to move context between machines or restore state from an exported archive.
+
+**Agent Factory pause/resume** *(v1.0.85+)*: Use the `/factories` dialog to pause and resume in-progress Agent Factory runs instead of only starting or cancelling them.
+
+**Model support**: Recent model additions include **GPT-6 Astra** (v1.0.85+).
+
+> **Plugin/skill command changes (v1.0.85+, breaking change)**: `copilot plugins list --kind instruction` and `--kind lsp` are replaced by `copilot instruction list` and `copilot lsp list`. `copilot plugins enable/disable --plugin|--mcp|--skill` is replaced by `enable`/`disable` subcommands on `copilot plugin`, `copilot mcp`, and `copilot skill`. `copilot plugins install --skill [--scope project]` is replaced by `copilot skill add [--project]`. The cross-kind `--kind`, `--scope`, `--mcp`, and `--skill` flags are removed from `copilot plugins` — use `copilot mcp` and `copilot skill` instead. `copilot plugins list --json` now returns a flat array of plugins (not the previous `{ plugins, errors }` object), and `copilot plugins list` is now an alias for `copilot plugin list`, reporting only plugins rather than MCP servers, skills, instructions, or LSP servers.
 
 ## Common Questions
 
