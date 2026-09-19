@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-19
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -431,6 +431,8 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `stayInAutopilot` | Keep the CLI in autopilot mode after an autopilot task completes, instead of returning to interactive mode (v1.0.69+) |
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
+| `worktreePathTemplate` | Path template deciding where `/worktree`, `/move`, `/new`, and `--worktree` create worktrees, e.g. `~/src/worktrees/{repo}/{branch}` using `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}` placeholders. Unset keeps the default `<repo>.worktrees/` layout (v1.0.87+) |
+| `slowConnectionThresholdMs` | Per-MCP-server threshold (in milliseconds) before the CLI warns about a slow connection (v1.0.87+) |
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
@@ -469,7 +471,17 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 When you leave plan mode, the CLI automatically reverts to your session model. This pairing works well with repository model pinning — you can enforce a high-quality model for implementation while allowing a lighter model during exploration and planning.
 
+**Auto routing tiers** *(v1.0.87+)*: When Auto is selected, you (or your organization) can pin startup defaults for the routing tier — for example favouring the **Efficiency**, **Balance**, or **Intelligence** tier for new sessions. Organizations can set a strict, non-overridable policy or leave the tier user-overridable, giving teams a way to standardize on cost/performance tradeoffs while still letting individual users tune sessions where policy allows.
+
 ### CLI Session Commands
+
+The `/config` command *(v1.0.85+)* opens a sidebar configuration screen for browsing and editing CLI settings without leaving your session, complementing the existing `/settings` dialog:
+
+```
+/config
+```
+
+**Vim mode** *(v1.0.85+)*: Vim-style modal editing is now available to everyone in the prompt composer. Turn it on with `/vim` or by setting `editorMode` to `vim` in your settings. The current mode (normal/insert) is shown while you type, so you always know which mode is active.
 
 The `/settings` command (v1.0.61+) opens an interactive dialog to browse and edit all user settings in one place. Use it to discover available settings, toggle options, and update values without manually editing your config file:
 
@@ -585,7 +597,7 @@ In v1.0.66+, you can pass a task description to `/worktree` to name the branch f
 
 This creates a branch named from your task description and begins working on it immediately, making it easy to spin up parallel work without stopping to think of a branch name.
 
-After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the experimental `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins.
+After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the experimental `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins. Since v1.0.87, the exact location is configurable via the `worktreePathTemplate` setting (see the settings table above) instead of always using `<repo>.worktrees/`.
 
 The `/new-worktree` command *(v1.0.78+, experimental)* creates a new worktree and starts a **fresh conversation** in it — without inheriting the current session's history. This is useful when you want a completely clean slate for a new task in a parallel branch:
 
@@ -826,6 +838,8 @@ copilot --no-sandbox -p "Set up development environment with system tools"
 ```
 
 These flags apply only to the current invocation — your persisted sandbox preference remains unchanged.
+
+**Custom network host rules** *(v1.0.85+)*: `/sandbox` now supports adding explicit network host allow/deny rules without replacing your configured upstream proxy. This lets you punch a narrow hole for a specific host (or block one) while keeping your organization's proxy in place for everything else, instead of an all-or-nothing choice between the proxy and no network restrictions.
 
 **`allowDevToolAccess` sandbox setting** *(v1.0.78+ as `allowDevToolCaches`, renamed to `allowDevToolAccess` in v1.0.79 — breaking change)*: When the sandbox is enabled, this setting grants sandboxed builds access to toolchain caches, registries, config files, and installs (npm cache, pip cache, Go module cache, etc.) so builds work without extra setup. Set it to `false` in `/settings` to opt out if you want a stricter sandbox that blocks all toolchain access.
 

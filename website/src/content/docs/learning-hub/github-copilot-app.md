@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-19
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -67,6 +67,14 @@ Each session the Copilot app creates runs in its own **git worktree**—a real, 
 - A **Worktree location** setting in Settings > Sessions lets you customize where new worktrees are created, using a path template with repository, branch, and name placeholders
 
 This makes it easy to dispatch multiple agents and trust they won't interfere with each other.
+
+### Generated Artifacts
+
+*(v1.1.21+)* Generated artifacts like Markdown files now open in the **Files tab** alongside your repository files, with a switcher to move between them. If an artifact turns out to be useful beyond the session, you can promote it directly into the repository instead of copying its contents manually.
+
+### Multi-Plugin Agent Disambiguation
+
+*(v1.1.21+)* When two installed plugins contribute custom agents that share the same display name, the agent picker now distinguishes them by their owning plugin — so you can tell which "code-reviewer" or "release-manager" agent you're selecting when multiple plugins define one.
 
 ### Running in the Background
 
@@ -156,6 +164,8 @@ Once installed, you can create a session by:
 3. **From your inbox**: The app syncs your GitHub inbox—click an issue and start a session for it
 
 Each session runs in its own worktree with its own isolated environment. You can run multiple sessions in parallel.
+
+> **Note**: The "Start from scratch" option in session creation menus and project pickers has been renamed to **"Chat"** *(v1.1.20+)*.
 
 ### Launching Sessions from the Terminal with Deep Links
 
