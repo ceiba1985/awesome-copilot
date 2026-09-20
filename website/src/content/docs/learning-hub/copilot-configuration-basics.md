@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-20
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -388,6 +388,12 @@ Settings file: `.vscode/settings.json` or global user settings
 }
 ```
 
+**Agent sessions in Dev Containers** *(VS Code 1.138+)*: Enable `chat.agentHost.devContainer.enabled` to run an agent session inside a local folder's Dev Container instead of on your host machine, so the agent uses the project's configured toolchain and dependencies (Docker required).
+
+**Auto model "Optimize for" control** *(VS Code 1.139+)*: When the model picker's **Auto** model is selected, an **Optimize for** control offers **Efficiency**, **Balance**, and **Intelligence** options to bias automatic model routing toward speed, cost, or capability in Copilot Chat and Copilot SDK agent sessions.
+
+**Model picker: Thinking Effort and Context Size** *(VS Code 1.139+)*: The model picker gained controls for a model's **Thinking Effort** and, when the model offers it, a longer **Context Size** — similar to the reasoning-effort controls already available in Copilot CLI.
+
 ### Visual Studio
 
 Settings: Tools → Options → GitHub Copilot
@@ -431,12 +437,16 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `stayInAutopilot` | Keep the CLI in autopilot mode after an autopilot task completes, instead of returning to interactive mode (v1.0.69+) |
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
+| `editorMode` | Set to `vim` to enable modal (Vim-style) editing in the composer; toggle for a session with `/vim` (v1.0.85+) |
+| `transcriptView` | Set to `concise` to group tool activity into expandable work summaries instead of a full timeline (v1.0.85+) |
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
 > **Session restore after a crash (v1.0.81+)**: If the CLI is interrupted unexpectedly — a crash or a machine restart — startup now offers to restore any sessions that were still open, so you don't have to reopen each terminal by hand.
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
+
+> **Sidebar configuration screen (v1.0.85+)**: Run `/config` to open a sidebar panel for browsing and editing configuration without leaving your session — a lighter-weight complement to the full-screen `/settings` dialog.
 
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
@@ -455,9 +465,9 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Session-scoped model selection** *(v1.0.79+)*: `/model` now changes the model for the **current session only** by default. Use `/config model` to set the default model for future sessions — previously `/model` changed both at once, which made it easy to accidentally change your global default while just trying something out in one session.
 
-**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
+**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually. In VS Code 1.139, the Auto model in Copilot Chat and Copilot SDK agent sessions also gained an **Optimize for** control with **Efficiency**, **Balance**, and **Intelligence** options for biasing automatic routing toward speed, cost, or capability.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. **claude-fable-5.1** (v1.0.83+) and **GPT-6 Astra** (v1.0.85+) round out the picker's newest additions for complex reasoning and coding work.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
