@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-21
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -72,6 +72,34 @@ tools: ['codebase', 'terminal', 'github']
 **description** (required): A clear summary of what the agent does. This is shown in the agent picker and helps users find the right agent.
 
 **model** (recommended): The AI model that powers the agent. Choose based on the complexity of the task—use more capable models for nuanced reasoning.
+
+**Multiple candidate models** *(v1.0.83+)*: `model` can also be a list of several models, tried in order until one is available to your account:
+
+```yaml
+---
+name: 'Security Reviewer'
+description: 'Expert security auditor'
+model: ['Claude Opus 5', 'Claude Sonnet 4']
+model-policy: required
+tools: ['codebase', 'terminal', 'github']
+---
+```
+
+Setting `model-policy: required` keeps model changes restricted to that list — useful for pinning an agent to specific models your team has vetted, while still providing fallbacks if the preferred model is temporarily unavailable.
+
+**include-custom-instructions** *(v1.0.86+)*: By default, custom agents run without automatically loading repository instruction files (`AGENTS.md`, `copilot-instructions.md`, `CLAUDE.md`). Set `include-custom-instructions: true` in the agent's frontmatter to opt back into having those files included in the agent's context:
+
+```yaml
+---
+name: 'Repo-Aware Reviewer'
+description: 'Reviews code using repository conventions'
+model: Claude Sonnet 4
+include-custom-instructions: true
+tools: ['codebase', 'terminal']
+---
+```
+
+This is useful when an agent needs the same conventions and standards documented in your repository's instruction files, rather than relying solely on its own persona instructions.
 
 **reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`:
 
