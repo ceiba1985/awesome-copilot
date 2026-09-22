@@ -85,6 +85,28 @@ tools: ['codebase', 'terminal', 'github']
 ---
 ```
 
+**model** as a fallback list *(v1.0.83+)*: You can list several models in `model`, tried in order until one is available to you — useful when a preferred model is temporarily rate-limited or not enabled for your account:
+
+```yaml
+---
+name: 'Security Reviewer'
+model: ['Claude Sonnet 5', 'Claude Sonnet 4', 'GPT-6 Astra']
+model-policy: required
+---
+```
+
+Set `model-policy: required` to keep model changes restricted to that list — if a user tries to switch the agent to a model outside it, the change is rejected.
+
+**include-custom-instructions** *(v1.0.86+)*: By default, custom agents run in isolation from repository instruction files. Set `include-custom-instructions: true` in frontmatter to opt an agent into reading `AGENTS.md`, `copilot-instructions.md`, and `CLAUDE.md` from the repository, layering repo-wide conventions on top of the agent's own persona:
+
+```yaml
+---
+name: 'API Design Reviewer'
+description: 'Reviews API designs against team conventions'
+include-custom-instructions: true
+---
+```
+
 **tools** (recommended): An array of built-in tools and MCP servers the agent can access. Common tools include:
 
 | Tool | Purpose |
@@ -255,7 +277,7 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 | Scenario | Recommended Model |
 |----------|-------------------|
 | Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
-| Complex reasoning, analysis | Claude Sonnet 4 |
+| Complex reasoning, analysis | Claude Sonnet 4, GPT-6 Astra *(v1.0.85+)* |
 | Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)*, kimi-k3 *(v1.0.79+)* |

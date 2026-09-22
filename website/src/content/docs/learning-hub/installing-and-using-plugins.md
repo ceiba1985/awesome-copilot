@@ -251,7 +251,15 @@ This opens an interactive list where each installed plugin and its components ar
 
 *(v1.0.81+)* `/plugin` also flags installed plugins and marketplaces that have a newer version available upstream, and offers an **Update** action to pull the latest version directly from the dashboard.
 
-> **Note**: Enabling and disabling hooks and LSP servers individually is temporarily unavailable following the `/plugins` removal — those toggles previously lived only in the retired dashboard.
+> **Restored in v1.0.85+**: Enabling and disabling hooks and LSP servers individually — briefly unavailable after the `/plugins` removal — is back. `copilot plugin`, `copilot mcp`, and `copilot skill` all gained `enable` and `disable` subcommands, replacing the old `copilot plugins enable/disable --plugin|--mcp|--skill` syntax:
+
+```bash
+copilot plugin enable my-plugin
+copilot mcp disable postgres
+copilot skill enable generate-tests
+```
+
+> **New list commands (v1.0.85+)**: `copilot instruction list` and `copilot lsp list` replace `copilot plugins list --kind instruction` and `--kind lsp`. Additionally, `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` all support a `--json` flag for machine-readable output — useful for scripting plugin inventory checks in CI.
 
 ### Loading Plugins from a Local Directory
 
