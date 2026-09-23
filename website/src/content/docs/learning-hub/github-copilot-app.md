@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-23
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -44,11 +44,13 @@ The key difference from existing Copilot experiences is that the app is purpose-
 The central hub of the Copilot app is the **My Work** view. This dashboard shows:
 
 - **Active sessions**: Each agent working on a task gets its own isolated session
-- **Issues and PRs**: Your inbox of work items from connected repositories
+- **Issues and PRs**: Your inbox of work items from connected repositories, now split into separate **Issues** and **Pull requests** sections in the sidebar and navigation *(v1.1.23+)*, with repositories browsable as dedicated pages
 - **Background automations**: Tasks running in the background, like Agent Merge handling your pull requests
 - **Overall status**: A quick overview of what's in progress, what's done, and what's blocked
 
 Instead of checking GitHub, your CLI, and VS Code for updates, everything is in one place.
+
+Custom repository Issues and Pull requests views can be edited, reordered, duplicated, and deleted, the same way as custom views in My Work *(v1.1.23+)*.
 
 ### Automations
 
@@ -72,6 +74,10 @@ This makes it easy to dispatch multiple agents and trust they won't interfere wi
 
 Closing the app's main window keeps it running in the background instead of quitting, with tray (Windows/Linux) or Dock (macOS) support to bring it back. This means scheduled automations and in-progress sessions keep running even when the window isn't open.
 
+### Local Sandbox for Agent Commands
+
+*(v1.1.23+)* A new project setting and `/sandbox` command let you run an agent's shell commands in a local sandbox restricted to the session's workspace. This limits filesystem access to just the files in the current session, adding a layer of protection when an agent runs commands you haven't manually reviewed.
+
 ### Canvases
 
 **Canvases** are interactive work surfaces where you and agents collaborate. Instead of long chat threads, a canvas shows the actual work:
@@ -80,7 +86,7 @@ Closing the app's main window keeps it running in the background instead of quit
 - Agents update the canvas as they work, and you can edit, approve, or redirect changes on the same surface
 - This makes it easy to see exactly what an agent is doing and step in when needed
 
-For a hands-on guide to building canvases with `/create-canvas`, see [Working with Canvas Extensions](../working-with-canvas-extensions/).
+For a hands-on guide to building canvases with `/create-canvas`, see [Working with Canvas Extensions](../working-with-canvas-extensions/). The app's Customize section now includes a **featured Sentry canvas** *(v1.1.23+)* you can install to triage live Sentry issues directly from a session.
 
 ### Agent Merge
 

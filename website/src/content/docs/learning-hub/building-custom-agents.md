@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-23
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -96,6 +96,20 @@ tools: ['codebase', 'terminal', 'github']
 | `edit` | Modify files in the workspace |
 
 For MCP server tools, reference them by server name (e.g., `postgres`, `docker`). See [Understanding MCP Servers](../understanding-mcp-servers/) for details.
+
+**include-custom-instructions** *(v1.0.86+)*: By default, custom agents run with only their own frontmatter and instructions — they don't automatically inherit your repository's instruction files. Set `include-custom-instructions: true` in an agent's frontmatter to have it also read repository instruction files (`AGENTS.md`, `.github/copilot-instructions.md`, `CLAUDE.md`) alongside its own persona:
+
+```yaml
+---
+name: 'API Design Reviewer'
+description: 'Reviews API designs for consistency with repo conventions'
+model: Claude Sonnet 4
+tools: ['codebase', 'github']
+include-custom-instructions: true
+---
+```
+
+This is useful when an agent's persona should be layered on top of your team's existing coding standards, rather than replacing them entirely.
 
 ### Agent Instructions
 
@@ -259,6 +273,7 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 | Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)*, kimi-k3 *(v1.0.79+)* |
+| Latest frontier model, broad capability upgrade | GPT-6 Astra *(v1.0.85+)* |
 | Quick analysis, simple tasks | Claude Haiku or GPT-4.1-mini |
 | Large codebase understanding | Models with larger context windows |
 

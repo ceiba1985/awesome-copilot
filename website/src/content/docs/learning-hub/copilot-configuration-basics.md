@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-23
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -867,6 +867,40 @@ copilot --config-dir ~/.my-copilot-config
 ```
 
 Set `COPILOT_HOME` in your shell profile to use a custom config directory across all sessions. This is especially useful when running multiple Copilot configurations for different projects or teams.
+
+### Vim Mode and the Configuration Sidebar
+
+**Vim mode** *(v1.0.85+)* brings modal editing to the CLI's composer. Turn it on with `/vim`, or set `editorMode` to `vim` in your settings to enable it by default for every session:
+
+```
+/vim
+```
+
+The current mode (normal, insert, visual) is shown while you type, so you always know which editing mode is active.
+
+**`/config`** *(v1.0.85+)* opens a sidebar configuration screen alongside your session, letting you browse and edit settings without leaving your conversation — a lighter-weight alternative to the full-screen `/settings` dialog for quick lookups and tweaks.
+
+**Concise transcript view** *(v1.0.85+)*: Set `transcriptView` to `"concise"` in `/settings` to group tool activity into expandable work summaries instead of showing every tool call inline. This keeps long agentic sessions easier to scan while still letting you expand any summary for full detail.
+
+### Worktree Path Templates
+
+*(v1.0.87+)* The `worktreePathTemplate` setting controls where `/worktree`, `/move`, `/new`, and the `--worktree` flag create new worktrees. Set a custom location using placeholders for the repository and branch:
+
+```json
+{
+  "worktreePathTemplate": "~/src/worktrees/{repo}/{branch}"
+}
+```
+
+Supported placeholders are `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}`. Leaving this setting unset preserves the previous default layout (`<repo>.worktrees/`, with slashes in branch names flattened to dashes).
+
+### Auto Routing Tier Defaults
+
+*(v1.0.87+)* Organizations and users can now set startup defaults for the **Auto** routing tier — the server-side model routing mode described above. A managed organization policy can set this default as **strict** (enforced for all members) or **user-overridable**, giving admins control over whether Auto routing is the default experience across the team while still allowing individual flexibility where permitted.
+
+### Session and Memory Import
+
+*(v1.0.85+)* Use the new session and memory import commands to bring sessions and memory data into Copilot CLI using a semantic JSONL interchange format. This is useful for migrating history from other tools or restoring session data across environments in a portable, line-delimited format.
 
 ### Shell Completion
 
