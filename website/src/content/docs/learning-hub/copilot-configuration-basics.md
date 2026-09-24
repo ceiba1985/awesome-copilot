@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-24
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -455,9 +455,9 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Session-scoped model selection** *(v1.0.79+)*: `/model` now changes the model for the **current session only** by default. Use `/config model` to set the default model for future sessions — previously `/model` changed both at once, which made it easy to accidentally change your global default while just trying something out in one session.
 
-**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
+**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually. As of v1.0.87, organisations can configure **user and managed startup defaults for the Auto routing tier**, including a strict mode that locks the tier or a user-overridable policy that just sets the initial default.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), and **GPT-6 Astra** (v1.0.85+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -478,6 +478,10 @@ The `/settings` command (v1.0.61+) opens an interactive dialog to browse and edi
 ```
 
 The settings dialog supports search — type to filter settings by name. Changes take effect immediately.
+
+**`/config`** *(v1.0.85+)* opens a sidebar configuration screen for the CLI, complementing the `/settings` dialog with a persistent, always-available view of your current configuration while you keep working in the main conversation.
+
+**Vim mode** *(v1.0.85+)* is available to everyone. Turn it on with `/vim`, or set `editorMode` to `vim` in `/settings`, for modal editing in the composer — the current mode (insert/normal) is shown while you type.
 
 *(v1.0.70+)* The `/settings` command and the `/model` command both support **`--repo` and `--local` flags** for explicitly scoping which layer of settings you want to view or edit:
 
@@ -561,7 +565,7 @@ The `/fork` command (v1.0.45+) copies the current session into a **new independe
 /branch                  # alias for /fork (v1.0.64+)
 ```
 
-After forking, the new session is immediately active. Both sessions share the same history up to the fork point but accumulate changes independently from that moment forward. Use `/fork` to experiment with a risky refactor without abandoning your current working session. Since v1.0.47, forked sessions display their **origin session** name in the sessions dialog, making it easy to trace which session a fork came from.
+After forking, the new session is immediately active. Both sessions share the same history up to the fork point but accumulate changes independently from that moment forward. Use `/fork` to experiment with a risky refactor without abandoning your current working session. Since v1.0.47, forked sessions display their **origin session** name in the sessions dialog, making it easy to trace which session a fork came from. As of v1.0.88, you can run `/fork` **during an active turn** — you no longer have to wait for the current response to finish before branching off.
 
 The `/cd` command changes the working directory for the current session. Since v1.0.65, the working directory **persists when you resume a session** — if you restart the CLI and resume, you return to the same directory automatically. Changing directory also triggers discovery of custom agents in the new location, so switching to a different project loads its agents without a restart:
 
@@ -586,6 +590,8 @@ In v1.0.66+, you can pass a task description to `/worktree` to name the branch f
 This creates a branch named from your task description and begins working on it immediately, making it easy to spin up parallel work without stopping to think of a branch name.
 
 After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the experimental `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins.
+
+**`worktreePathTemplate` setting** *(v1.0.87+)*: Controls **where** `/worktree`, `/move`, `/new`, and `--worktree` create new worktrees, using a path template with placeholders — for example `~/src/worktrees/{repo}/{branch}` supports `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}`. Leaving it unset keeps the default layout, `<repo>.worktrees/`, with slashes in the branch name flattened to dashes.
 
 The `/new-worktree` command *(v1.0.78+, experimental)* creates a new worktree and starts a **fresh conversation** in it — without inheriting the current session's history. This is useful when you want a completely clean slate for a new task in a parallel branch:
 
@@ -833,6 +839,8 @@ These flags apply only to the current invocation — your persisted sandbox pref
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
+**Sandbox network host allow/deny rules** *(v1.0.85+)*: `/sandbox` now supports network host allow/deny rules that layer on top of your configured upstream proxy, instead of replacing it — use this to permit or block specific hosts without changing your proxy setup.
+
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
@@ -867,6 +875,21 @@ copilot --config-dir ~/.my-copilot-config
 ```
 
 Set `COPILOT_HOME` in your shell profile to use a custom config directory across all sessions. This is especially useful when running multiple Copilot configurations for different projects or teams.
+
+### Plugin and Session Management Commands
+
+**(v1.0.85+)**: The plugin management commands were split into per-kind subcommands for clarity. `copilot instruction list` and `copilot lsp list` replace `copilot plugins list --kind instruction` and `--kind lsp`, and `enable`/`disable` were added to `copilot plugin`, `copilot mcp`, and `copilot skill` — replacing `copilot plugins enable/disable --plugin|--mcp|--skill`:
+
+```bash
+copilot instruction list           # list installed instruction plugins
+copilot lsp list                   # list installed LSP plugins
+copilot mcp enable my-server       # enable an MCP server plugin
+copilot skill disable my-skill     # disable a skill plugin
+```
+
+`--json` output is also available on `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` for scripting.
+
+**Session and memory import** *(v1.0.85+)*: Import sessions and memory using the semantic JSONL interchange format, useful for migrating history between machines or sharing curated context with teammates.
 
 ### Shell Completion
 

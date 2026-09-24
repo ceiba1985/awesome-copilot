@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-24
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -73,7 +73,7 @@ tools: ['codebase', 'terminal', 'github']
 
 **model** (recommended): The AI model that powers the agent. Choose based on the complexity of the task—use more capable models for nuanced reasoning.
 
-**reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`:
+**reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`. As of v1.0.88, a custom agent's `reasoningEffort` now applies as soon as the agent is selected, instead of only once its model loads. An explicit `--reasoning-effort` CLI flag still takes precedence, and if the selected model doesn't offer the requested level, the CLI reports this and leaves it unapplied:
 
 ```yaml
 ---
@@ -84,6 +84,20 @@ reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
 ---
 ```
+
+**include-custom-instructions** *(v1.0.86+)*: Set to `true` to have the agent automatically pick up repository instruction files — `AGENTS.md`, `copilot-instructions.md`, and `CLAUDE.md` — in addition to its own persona instructions:
+
+```yaml
+---
+name: 'Feature Builder'
+description: 'Implements features following repository conventions'
+model: Claude Sonnet 4
+include-custom-instructions: true
+tools: ['codebase', 'terminal', 'edit']
+---
+```
+
+Use this when an agent's task benefits from your team's existing coding standards and conventions, rather than relying solely on the agent's own persona instructions.
 
 **tools** (recommended): An array of built-in tools and MCP servers the agent can access. Common tools include:
 
