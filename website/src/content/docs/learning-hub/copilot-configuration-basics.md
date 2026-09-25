@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-25
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -431,8 +431,18 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `stayInAutopilot` | Keep the CLI in autopilot mode after an autopilot task completes, instead of returning to interactive mode (v1.0.69+) |
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
+| `editorMode` | Set to `vim` for modal editing (normal/insert modes) in the composer; also toggleable per-session with `/vim` (v1.0.85+) |
+| `transcriptView` | Set to `"concise"` to group tool activity into expandable work summaries instead of a flat scrolling log (v1.0.85+) |
+| `taskbarPresence` | Set to `false` to disable the Windows taskbar session status indicator (v1.0.86+) |
+| `worktreeBaseRef` | Controls whether `/worktree`, `/worktree new`, and `--worktree` branch from `HEAD` or the remote default branch; all now default to `HEAD` (v1.0.79-8+) |
+| `worktreePathTemplate` | Custom path template for where `/worktree`, `/move`, `/new`, and `--worktree` create worktrees, e.g. `~/src/worktrees/{repo}/{branch}` (supports `{repoPath}`, `{repo}`, `{branch}`, `{branchSlug}`) (v1.0.87+) |
+| `slowConnectionThresholdMs` | Per-MCP-server threshold (ms) before the CLI warns about a slow connection (v1.0.87+) |
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
+
+**Vim mode** *(v1.0.85+)*: Vim mode is available to everyone. Enable it with `/vim` in a session, or set `editorMode` to `vim` in your settings for modal editing (normal/insert modes) in the composer. The current mode is shown while you type, and a vim mode badge stays visible beside the activity indicator during turns.
+
+**`/config` sidebar** *(v1.0.85+)*: Run `/config` to open a sidebar configuration screen inside the CLI, giving you a visual way to review and adjust settings without leaving your session.
 
 > **Session restore after a crash (v1.0.81+)**: If the CLI is interrupted unexpectedly — a crash or a machine restart — startup now offers to restore any sessions that were still open, so you don't have to reopen each terminal by hand.
 
@@ -455,9 +465,11 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Session-scoped model selection** *(v1.0.79+)*: `/model` now changes the model for the **current session only** by default. Use `/config model` to set the default model for future sessions — previously `/model` changed both at once, which made it easy to accidentally change your global default while just trying something out in one session.
 
-**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
+**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually. As of v1.0.82+, Auto mode also **adapts model selection as your task evolves** during a conversation, rather than only routing at the start of each request. In v1.0.87+, organizations can set strict or user-overridable startup defaults for the Auto routing tier via managed policy.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), **claude-fable-5.1** (v1.0.83+), and **GPT-6 Astra** (v1.0.85+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. Retired Claude and Gemini models are periodically removed from the `/model` picker results (v1.0.83+) to keep the list current — pin a specific version in your settings if you depend on an older model. In v1.0.83+, custom agents can also list several models in their `model` frontmatter field, tried in order until one is available to your account; set `model-policy: required` to keep model changes restricted to that list.
+
+**Streamer mode** (v1.0.85+): Streamer mode masks internal model names in `/model`, the footer, and startup diagnostics — useful when recording or sharing your screen without revealing which model you're using.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -585,7 +597,7 @@ In v1.0.66+, you can pass a task description to `/worktree` to name the branch f
 
 This creates a branch named from your task description and begins working on it immediately, making it easy to spin up parallel work without stopping to think of a branch name.
 
-After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the experimental `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins.
+After the command runs, the session is inside the new worktree. Use this when you want to work on a second task in parallel without stashing changes or opening a new terminal. In v1.0.64+ you can also use the experimental `--worktree` flag at startup (`copilot -w [name]`) to create or reuse a worktree under `<repo>.worktrees/` before the session begins. A `worktreePathTemplate` setting *(v1.0.87+)* lets you customize where `/worktree`, `/move`, `/new`, and `--worktree` create worktrees — for example `~/src/worktrees/{repo}/{branch}` — with `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}` placeholders available. Leaving it unset keeps the default `<repo>.worktrees/` layout, with slashes in branch names flattened to dashes.
 
 The `/new-worktree` command *(v1.0.78+, experimental)* creates a new worktree and starts a **fresh conversation** in it — without inheriting the current session's history. This is useful when you want a completely clean slate for a new task in a parallel branch:
 
@@ -670,6 +682,8 @@ Use `/diagnose` when a session is behaving unexpectedly — it inspects session 
 **Keyboard shortcuts for queuing messages**: Use **Ctrl+Q** or **Ctrl+Enter** to queue a message (send it while the agent is still working). **Ctrl+D** no longer queues messages — it now has its default terminal behavior. If you have muscle memory for Ctrl+D queuing, switch to Ctrl+Q.
 
 **Directable queue manager** *(v1.0.76+)*: While the agent is working, you can manage your queued messages before they are sent. Open the queue manager to **reorder**, **edit**, **remove**, or **repeat** queued messages — even send one immediately out of turn. This is useful when you think of a better follow-up mid-run or want to reprioritize what the agent works on next.
+
+**Consolidated steering prompts** *(v1.0.87+)*: Consecutive steering prompts sent in the same mode now combine into a single pending message instead of stacking separately. Press **Up** in an empty chat input to recall the pending message for editing (including pasted text and attachments) — the recall hint appears in the message itself. **Ctrl+C** stops the running turn instead of removing pending prompts one at a time, and **Ctrl+Q** queued prompts remain separate from steering prompts. Use **Ctrl+P** to browse prompt history without withdrawing anything from the queue. This is available for local sessions; commands and prompts already being processed cannot be recalled.
 
 **Background running tasks**: Press **Ctrl+X → B** to move the current running task or shell command to the background. The task continues executing while you can type a new message or review earlier output. This is useful for long-running commands where you want to interact with the agent while waiting for the result.
 
