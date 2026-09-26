@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-26
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -44,11 +44,13 @@ The key difference from existing Copilot experiences is that the app is purpose-
 The central hub of the Copilot app is the **My Work** view. This dashboard shows:
 
 - **Active sessions**: Each agent working on a task gets its own isolated session
-- **Issues and PRs**: Your inbox of work items from connected repositories
+- **Issues and PRs**: Your inbox of work items from connected repositories, now organized into separate **Issues** and **Pull requests** sections in the sidebar, with repositories browsable as dedicated pages
 - **Background automations**: Tasks running in the background, like Agent Merge handling your pull requests
 - **Overall status**: A quick overview of what's in progress, what's done, and what's blocked
 
 Instead of checking GitHub, your CLI, and VS Code for updates, everything is in one place.
+
+**AI-powered filtering** *(v1.1.23+)*: Describe the results you want in My Work's **Add filter** menu (for example, "PRs I opened last week that are still failing CI") and get a generated filter you can inspect, edit, or revert. My Work also supports merged-date filtering and a reorganized All filters menu. If AI filtering can't turn your request into filters, you can continue in a session with your original request and repository prefilled.
 
 ### Automations
 
@@ -68,9 +70,19 @@ Each session the Copilot app creates runs in its own **git worktree**—a real, 
 
 This makes it easy to dispatch multiple agents and trust they won't interfere with each other.
 
+### Local Sandbox for Agent Commands
+
+**Setting**: Project setting + `/sandbox` command *(v1.1.23+)*
+
+A new project setting and `/sandbox` command let you run the agent's shell commands in a local sandbox that restricts filesystem access to the session's workspace. This gives you an extra layer of protection when running agents with broad tool permissions, without needing a separate container or VM.
+
 ### Running in the Background
 
 Closing the app's main window keeps it running in the background instead of quitting, with tray (Windows/Linux) or Dock (macOS) support to bring it back. This means scheduled automations and in-progress sessions keep running even when the window isn't open.
+
+### Restarting Sessions
+
+Use the `/restart-session` command *(v1.1.23+)* to restart a chat or side chat conversation while preserving its history. This is useful when a session's context needs a fresh start without losing the record of what happened.
 
 ### Canvases
 
@@ -79,6 +91,7 @@ Closing the app's main window keeps it running in the background instead of quit
 - A canvas might display a plan, a pull request diff, a terminal output, or a live browser session
 - Agents update the canvas as they work, and you can edit, approve, or redirect changes on the same surface
 - This makes it easy to see exactly what an agent is doing and step in when needed
+- A featured **Sentry canvas** *(v1.1.23+)* is available in Customize, letting you install and open it to triage live Sentry issues directly from a session
 
 For a hands-on guide to building canvases with `/create-canvas`, see [Working with Canvas Extensions](../working-with-canvas-extensions/).
 

@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-26
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -459,6 +459,8 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
 
+**Auto routing tier** *(v1.0.85+)*: In addition to per-model selection, the CLI supports an **Auto** routing tier that automatically suggests and switches between models based on task complexity, with a quick shortcut or click to accept the suggestion. Organizations can set strict or user-overridable startup defaults for the Auto tier via managed policy, and the CLI shows a brief feedback prompt after you manually switch away from an Auto-selected model. Newer model additions available through the picker include **GPT-6 Astra**, **GPT-6 Sol**, **GPT-6 Luna** (v1.0.85+/v1.0.89+), and **Claude Opus 5.5** (v1.0.89+).
+
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
 ```
@@ -783,6 +785,22 @@ gh copilot --effort high "Refactor the authentication module"
 
 Accepted values are `low`, `medium`, and `high`. You can also set a default via the `effortLevel` config setting.
 
+**Vim mode** *(v1.0.85+)*: Turn on modal (Vim-style) editing in the composer with `/vim`, or set `editorMode` to `vim` in your settings. The current mode (normal or insert) is shown while you type, so you always know which mode you're in.
+
+**`/config`** *(v1.0.85+)*: Opens a sidebar configuration screen inside the CLI, giving you a persistent view of settings alongside your session instead of a modal dialog.
+
+**Renamed plugin management commands** *(v1.0.85+, breaking change)*: Several `copilot plugins` subcommands were replaced with more specific top-level commands:
+
+- `copilot instruction list` replaces `copilot plugins list --kind instruction`
+- `copilot lsp list` replaces `copilot plugins list --kind lsp`
+- `copilot plugin enable` / `copilot plugin disable` replace `copilot plugins enable/disable --plugin`
+- `copilot mcp enable` / `copilot mcp disable` replace `copilot plugins enable/disable --mcp`
+- `copilot skill enable` / `copilot skill disable` replace `copilot plugins enable/disable --skill`
+
+`--json` output is also available on `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` for scripting.
+
+**Worktree path customization** *(v1.0.87+)*: A `worktreePathTemplate` setting controls where `/worktree`, `/move`, `/new`, and the `--worktree` startup flag create worktrees. Set it to a path template such as `~/src/worktrees/{repo}/{branch}` using the placeholders `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}`. Leaving it unset keeps the default `<repo>.worktrees/` layout, with slashes in branch names flattened to dashes.
+
 ### CLI Startup Flags
 
 The `-C <directory>` flag changes the working directory before starting, similar to `git -C` (v1.0.42+). This is useful for scripts or aliases that need to start Copilot CLI in a specific project directory without a separate `cd`:
@@ -826,6 +844,8 @@ copilot --no-sandbox -p "Set up development environment with system tools"
 ```
 
 These flags apply only to the current invocation — your persisted sandbox preference remains unchanged.
+
+**Sandbox network allow/deny rules** *(v1.0.85+)*: Use `/sandbox` to add network host allow or deny rules without replacing your configured upstream proxy. This lets you fine-tune which hosts a sandboxed session can reach — for example, allowing a specific internal API while keeping the rest of the network blocked — instead of only toggling network access on or off entirely.
 
 **`allowDevToolAccess` sandbox setting** *(v1.0.78+ as `allowDevToolCaches`, renamed to `allowDevToolAccess` in v1.0.79 — breaking change)*: When the sandbox is enabled, this setting grants sandboxed builds access to toolchain caches, registries, config files, and installs (npm cache, pip cache, Go module cache, etc.) so builds work without extra setup. Set it to `false` in `/settings` to opt out if you want a stricter sandbox that blocks all toolchain access.
 
