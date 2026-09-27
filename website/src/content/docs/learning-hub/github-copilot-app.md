@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-27
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -44,11 +44,13 @@ The key difference from existing Copilot experiences is that the app is purpose-
 The central hub of the Copilot app is the **My Work** view. This dashboard shows:
 
 - **Active sessions**: Each agent working on a task gets its own isolated session
-- **Issues and PRs**: Your inbox of work items from connected repositories
+- **Issues and PRs**: Your inbox of work items from connected repositories, split into separate Issues and Pull requests sections that can also be browsed as dedicated pages
 - **Background automations**: Tasks running in the background, like Agent Merge handling your pull requests
 - **Overall status**: A quick overview of what's in progress, what's done, and what's blocked
 
 Instead of checking GitHub, your CLI, and VS Code for updates, everything is in one place.
+
+**AI-generated filters**: In the Add filter menu, describe the results you want in plain language (for example, "PRs I authored that are waiting on review") and My Work generates a filter you can inspect, edit, or revert — instead of building filter conditions manually field by field. If a request can't be turned into a filter, you can continue in a session with your original request and repository prefilled.
 
 ### Automations
 
@@ -82,6 +84,14 @@ Closing the app's main window keeps it running in the background instead of quit
 
 For a hands-on guide to building canvases with `/create-canvas`, see [Working with Canvas Extensions](../working-with-canvas-extensions/).
 
+### Generated Artifacts and the Files Tab
+
+Files an agent generates during a session — such as Markdown reports or plans — now open in the **Files tab** alongside your repository's own files, with a switcher to move between generated artifacts and added file/folder sources. If a generated artifact is useful beyond the session, you can **promote it into the repository** directly from the Files tab instead of manually copying its contents out.
+
+### Local Sandbox for Shell Commands
+
+A project setting and `/sandbox` command let you run the agent's shell commands in a local sandbox that restricts filesystem access to the session's workspace, giving you an extra layer of containment for commands the agent runs on your behalf without needing a separate container setup.
+
 ### Agent Merge
 
 **Agent Merge** is a feature that can carry your pull requests through the entire workflow:
@@ -97,7 +107,7 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 
 ### Requesting Code Reviews
 
-From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made. You can also edit issue and pull request titles and descriptions, and edit, delete, or hide comments, directly from the app.
 
 ## Who is the Copilot app for?
 

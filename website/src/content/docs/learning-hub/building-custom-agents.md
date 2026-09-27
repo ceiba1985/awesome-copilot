@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-27
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -73,7 +73,7 @@ tools: ['codebase', 'terminal', 'github']
 
 **model** (recommended): The AI model that powers the agent. Choose based on the complexity of the task—use more capable models for nuanced reasoning.
 
-**reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`:
+**reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`. As of v1.0.86+, this setting also applies as soon as the agent is selected (not only once its model loads), and an explicit `--reasoning-effort` flag on the command line still takes precedence over it; if the selected model doesn't offer the requested level, the CLI reports that and leaves it unapplied:
 
 ```yaml
 ---
@@ -82,6 +82,32 @@ description: 'Thorough security audit for OWASP vulnerabilities'
 model: Claude Sonnet 4
 reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
+---
+```
+
+**model** *(v1.0.83+)*: In addition to a single model name, `model` can list several models tried in order until one is available to your account — useful for pinning an agent to a preferred model family with automatic fallback:
+
+```yaml
+---
+name: 'Security Reviewer'
+description: 'Thorough security audit for OWASP vulnerabilities'
+model:
+  - Claude Opus 5
+  - Claude Sonnet 5
+model-policy: required
+tools: ['codebase', 'terminal', 'github']
+---
+```
+
+Set `model-policy: required` to keep model changes restricted to models on that list, preventing a user from switching the agent to an unlisted model mid-session.
+
+**include-custom-instructions** *(v1.0.86+)*: Set to `true` to have this agent automatically pick up repository instruction files (`AGENTS.md`, `copilot-instructions.md`, `CLAUDE.md`) in addition to its own persona, instead of relying solely on the agent's own frontmatter and body:
+
+```yaml
+---
+name: 'Release Manager'
+description: 'Automates release preparation'
+include-custom-instructions: true
 ---
 ```
 

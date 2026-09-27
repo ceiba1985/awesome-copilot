@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-09-27
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -451,13 +451,13 @@ These files follow the same format as `config.json` and are loaded after the glo
 
 The model picker opens in a **full-screen view** with inline reasoning effort adjustment. Use the **← / →** arrow keys to change the reasoning effort level (`low`, `medium`, `high`) directly from the picker without leaving the session. The current reasoning effort level is also displayed in the model header (e.g., `claude-sonnet-4.6 (high)`) so you always know which level is active.
 
-**Grouped model picker** *(v1.0.79+)*: The model picker now groups models into **Recent**, **Recommended**, **New**, and other sections instead of a single flat list, making it faster to find the model you want. Press **Shift+Tab** to switch between grouping views.
+**Grouped model picker** *(v1.0.79+)*: The model picker now groups models into **Recent**, **Recommended**, **New**, and other sections instead of a single flat list, making it faster to find the model you want. Press **Shift+Tab** to switch between grouping views. As of v1.0.85+, entries sourced from the online model catalogue also show trust status, tier, and eligibility details inline, making it easier to evaluate a model before switching to it.
 
 **Session-scoped model selection** *(v1.0.79+)*: `/model` now changes the model for the **current session only** by default. Use `/config model` to set the default model for future sessions — previously `/model` changed both at once, which made it easy to accidentally change your global default while just trying something out in one session.
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. **GPT-6 Astra** (v1.0.85+) is also available in the model picker.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -782,6 +782,28 @@ gh copilot --effort high "Refactor the authentication module"
 ```
 
 Accepted values are `low`, `medium`, and `high`. You can also set a default via the `effortLevel` config setting.
+
+### Editor and Session Display Modes
+
+**Vim mode** *(v1.0.85+)*: Turn on modal editing in the composer with `/vim`, or set `editorMode` to `vim` in `/settings` to enable it by default for every session. The active mode (Normal/Insert) is shown while you type, so you always know which mode you're in.
+
+**Concise transcript view** *(v1.0.85+)*: Set `transcriptView` to `"concise"` in `/settings` to group tool activity into expandable work summaries instead of a long scrolling list of individual tool calls — useful for keeping long agentic sessions readable.
+
+**`/config` sidebar** *(v1.0.85+)*: Run `/config` to open a sidebar configuration screen without leaving your session, as an alternative to the full-screen `/settings` dialog.
+
+### Plugin, MCP, and Skill Management Commands
+
+*(v1.0.85+, breaking change)* The CLI consolidated several plugin-related subcommands into more specific, discoverable equivalents:
+
+| Old command | New command |
+|---|---|
+| `copilot plugins list --kind instruction` | `copilot instruction list` |
+| `copilot plugins list --kind lsp` | `copilot lsp list` |
+| `copilot plugins enable/disable --plugin <name>` | `copilot plugin enable/disable <name>` |
+| `copilot plugins enable/disable --mcp <name>` | `copilot mcp enable/disable <name>` |
+| `copilot plugins enable/disable --skill <name>` | `copilot skill enable/disable <name>` |
+
+`--json` output is also now available on `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` for scripting and CI use.
 
 ### CLI Startup Flags
 
