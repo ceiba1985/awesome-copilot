@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-29
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -84,6 +84,19 @@ reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
 ---
 ```
+
+**include-custom-instructions** *(v1.0.86+)*: By default, a custom agent's own frontmatter and body are its complete set of instructions. Set `include-custom-instructions: true` to have the agent also pick up repository instruction files (`AGENTS.md`, `.github/copilot-instructions.md`, `CLAUDE.md`), layering the repository's general conventions on top of the agent's specialized persona:
+
+```yaml
+---
+name: 'Terraform Expert'
+description: 'Infrastructure-as-code specialist for Terraform on Azure'
+include-custom-instructions: true
+tools: ['codebase', 'terminal']
+---
+```
+
+Use this when you want an agent to follow both its own specialized guidance and the team-wide conventions defined in your repository's instruction files, rather than operating from the agent file alone.
 
 **tools** (recommended): An array of built-in tools and MCP servers the agent can access. Common tools include:
 

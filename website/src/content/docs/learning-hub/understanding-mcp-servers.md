@@ -3,7 +3,7 @@ title: 'Understanding MCP Servers'
 description: 'Learn how Model Context Protocol servers extend GitHub Copilot with access to external tools, databases, and APIs.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-29
 estimatedReadingTime: '8 minutes'
 tags:
   - mcp
@@ -314,6 +314,8 @@ For example, a PostgreSQL server that can't connect because `DATABASE_URL` is no
 ```
 /mcp list              # show servers attached to this session
 ```
+
+**Non-interactive MCP inspection** *(v1.0.87+)*: `copilot mcp list` and `copilot mcp get` now report the built-in `github-mcp-server` when you're signed in, matching what was previously visible only in the interactive `/mcp show` view. This makes it easier to script checks for the GitHub MCP server's presence and status outside an interactive session.
 
 You can also open the `/mcp` manager while the agent is working to toggle servers on or off mid-turn. Add, edit, delete, and re-auth actions wait until the turn finishes, but enabling or disabling a server takes effect immediately.
 
