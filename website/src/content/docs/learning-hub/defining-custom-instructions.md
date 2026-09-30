@@ -3,7 +3,7 @@ title: 'Defining Custom Instructions'
 description: 'Learn how to create persistent, context-aware instructions that guide GitHub Copilot automatically across your codebase.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
+lastUpdated: 2026-09-29
 estimatedReadingTime: '8 minutes'
 tags:
   - instructions
@@ -35,6 +35,8 @@ Custom instructions are markdown files (`.instructions.md`) that contain:
 - They persist across all chat sessions and inline completions
 - They can be scoped globally, per language, or per directory using glob patterns
 - They help Copilot understand your codebase's unique context without manual prompting
+
+> **Claude Code rule files** *(v1.0.89+)*: GitHub Copilot CLI also reads rule files from `.claude/rules/` and applies them as custom instructions. If your repository already maintains Claude Code rules, they take effect in Copilot CLI without needing to be duplicated as `.instructions.md` files.
 
 ### How Instructions Differ from Other Customizations
 

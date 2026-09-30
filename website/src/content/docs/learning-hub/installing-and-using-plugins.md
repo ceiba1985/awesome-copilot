@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-29
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -225,6 +225,10 @@ Once installed, plugins are managed with a few simple commands:
 # List all installed plugins
 copilot plugin list
 
+# List installed instructions or LSP servers directly (v1.0.85+, replacing `copilot plugins list --kind instruction|lsp`)
+copilot instruction list
+copilot lsp list
+
 # Update a plugin to the latest version
 copilot plugin update my-plugin
 
@@ -233,7 +237,15 @@ copilot plugin marketplace update
 
 # Remove a plugin
 copilot plugin uninstall my-plugin
+
+# Enable or disable a plugin, MCP server, or skill directly from the command line (v1.0.85+)
+copilot plugin enable my-plugin
+copilot plugin disable my-plugin
+copilot mcp enable my-server
+copilot skill disable my-skill
 ```
+
+> **`--json` output** *(v1.0.85+)*: `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` all accept a `--json` flag for machine-readable output, useful in scripts and CI pipelines.
 
 > **Auto-update for first-party plugins** *(v1.0.78+)*: Plugins sourced from the official `copilot-plugins` marketplace automatically update to their latest version at the start of each session. You do not need to run `copilot plugin update` for first-party plugins — updates are applied silently on startup. Community plugins from `awesome-copilot` and other marketplace registries still require a manual `copilot plugin update` command.
 
@@ -253,6 +265,8 @@ This opens an interactive list where each installed plugin and its components ar
 
 > **Note**: Enabling and disabling hooks and LSP servers individually is temporarily unavailable following the `/plugins` removal — those toggles previously lived only in the retired dashboard.
 
+*(v1.0.89+)* Plugins loaded via `--plugin-dir` (direct installs) can now be enabled and disabled just like marketplace plugins. A direct plugin already recorded as disabled stops loading on startup; re-enable it with `copilot plugin enable`.
+
 ### Loading Plugins from a Local Directory
 
 You can load plugins directly from a local directory without installing them from a marketplace, using the `--plugin-dir` flag when starting Copilot:
@@ -261,7 +275,7 @@ You can load plugins directly from a local directory without installing them fro
 copilot --plugin-dir /path/to/my-plugin
 ```
 
-Plugins loaded this way appear in `/plugin list` under a separate **External Plugins** section, clearly distinguished from marketplace-installed plugins. This is useful for testing local plugins in development or loading private plugins that aren't published to any marketplace.
+Plugins loaded this way appear in `/plugin list` under a separate **External Plugins** section, clearly distinguished from marketplace-installed plugins. This is useful for testing local plugins in development or loading private plugins that aren't published to any marketplace. As of v1.0.89, these direct installs can also be enabled and disabled with `copilot plugin enable`/`disable`, matching marketplace plugin management.
 
 ### Where Plugins Are Stored
 

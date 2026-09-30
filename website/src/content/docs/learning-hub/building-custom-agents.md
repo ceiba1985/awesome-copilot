@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-09-29
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -84,6 +84,22 @@ reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
 ---
 ```
+
+**reasoning-effort** *(v1.0.88+)*: When set, an agent's `reasoning-effort` now applies as soon as the agent is selected, instead of only after its associated model loads. An explicit `--reasoning-effort` flag on the command line still takes precedence, and if the selected model doesn't offer the requested level, the CLI reports it and leaves the setting unapplied.
+
+**include-custom-instructions** *(v1.0.86+)*: By default, a custom agent's persona replaces the repository's ambient instruction files for the duration of the session. Set `include-custom-instructions: true` in an agent's frontmatter to have it *also* load repository instruction files (`AGENTS.md`, `copilot-instructions.md`, `CLAUDE.md`) alongside its own persona:
+
+```yaml
+---
+name: 'API Architect'
+description: 'Designs REST and GraphQL APIs following team conventions'
+model: Claude Sonnet 5
+include-custom-instructions: true
+tools: ['codebase', 'edit']
+---
+```
+
+Use this when an agent should layer its specialized expertise on top of your team's existing coding standards, rather than operating in isolation from them.
 
 **tools** (recommended): An array of built-in tools and MCP servers the agent can access. Common tools include:
 
@@ -254,9 +270,9 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 
 | Scenario | Recommended Model |
 |----------|-------------------|
-| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
+| Most demanding reasoning, security review | Claude Opus 5.5 *(v1.0.89+)*, Claude Sonnet 5 *(v1.0.67+)* |
 | Complex reasoning, analysis | Claude Sonnet 4 |
-| Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
+| Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)*, GPT-6 Sol / GPT-6 Luna *(v1.0.89+, where available)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)*, kimi-k3 *(v1.0.79+)* |
 | Quick analysis, simple tasks | Claude Haiku or GPT-4.1-mini |

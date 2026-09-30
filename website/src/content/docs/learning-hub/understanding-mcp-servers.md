@@ -3,7 +3,7 @@ title: 'Understanding MCP Servers'
 description: 'Learn how Model Context Protocol servers extend GitHub Copilot with access to external tools, databases, and APIs.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-09-29
 estimatedReadingTime: '8 minutes'
 tags:
   - mcp
@@ -213,7 +213,13 @@ Some MCP servers require authentication to connect to protected resources. GitHu
 - **API keys via environment variables**: Pass secrets through the `env` field in the MCP server configuration (see examples above). Never hardcode credentials in `.mcp.json`.
 - **`${input:variableName}` prompts**: VS Code will prompt for these values at runtime, keeping secrets out of committed files.
 
+*(v1.0.89+)* MCP servers with pre-registered OAuth clients now honor a configured `oauthScopes` setting, so you can constrain the scopes requested during authentication instead of accepting the server's default scope set.
+
 > **Tip**: If your MCP server uses OAuth with Dynamic Client Registration but hosts its authorization metadata at a non-standard URL (as some enterprise servers like Atlassian Rovo do), Copilot CLI handles this automatically.
+
+**Per-server slow-connection warnings** *(v1.0.87+)*: Configure `slowConnectionThresholdMs` on an individual MCP server entry to control when the CLI warns you that a server is taking a long time to connect, tuning the threshold for servers with naturally slower startup.
+
+**`copilot mcp list` / `copilot mcp get`** *(v1.0.87+)*: These commands now report the built-in `github-mcp-server` when you're signed in, instead of showing it only in the interactive `/mcp` view — useful for scripts that enumerate available MCP servers non-interactively.
 
 ## How Agents Use MCP Tools
 
