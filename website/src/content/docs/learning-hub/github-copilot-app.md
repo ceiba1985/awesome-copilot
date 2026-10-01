@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-01
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -15,6 +15,7 @@ relatedArticles:
   - ./using-copilot-coding-agent.md
   - ./agentic-workflows.md
   - ./what-are-agents-skills-instructions.md
+  - ./vscode-agent-host-and-copilot-harness.md
 prerequisites:
   - Understanding of GitHub Copilot agents
   - Copilot Pro, Pro+, Business, or Enterprise plan
@@ -39,9 +40,11 @@ The key difference from existing Copilot experiences is that the app is purpose-
 
 ## Key Features
 
-### My Work View
+### Issues and Pull Requests Views
 
-The central hub of the Copilot app is the **My Work** view. This dashboard shows:
+The central hub of the Copilot app is split into separate **Issues** and **Pull requests** views (previously a single combined **My Work** view). Each has its own saved views, filters, and layout that persist independently, so your issue triage setup doesn't interfere with your PR review workflow. Old **My work** and inbox links still work and redirect to the new views.
+
+Together, they show:
 
 - **Active sessions**: Each agent working on a task gets its own isolated session
 - **Issues and PRs**: Your inbox of work items from connected repositories
@@ -50,11 +53,17 @@ The central hub of the Copilot app is the **My Work** view. This dashboard shows
 
 Instead of checking GitHub, your CLI, and VS Code for updates, everything is in one place.
 
+### Retry Agent Responses
+
+If an agent's response doesn't land the way you wanted, use the **Retry** action to resend the same request with a different model, reasoning effort, or context tier — without retyping the prompt or losing the original conversation turn.
+
 ### Automations
 
 The Copilot app includes built-in automations that can run scheduled tasks for you using the same agentic technology. You can use templates out of the box or create your own.
 
 Automations run in the context of a repository, so they can access issues, pull requests, and code. You can also choose whether they run as a plan, an interactive session, or on autopilot.
+
+> **Note**: The feature previously called **Agent Factories** has been renamed to **Dynamic Workflows**. Existing workflow runs and transcripts are preserved under the new name — only the label changed.
 
 ### Isolated Worktrees for Parallel Work
 

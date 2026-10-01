@@ -14,6 +14,7 @@ relatedArticles:
   - ./building-custom-agents.md
   - ./what-are-agents-skills-instructions.md
   - ./github-copilot-terminology-glossary.md
+  - ./vscode-agent-host-and-copilot-harness.md
 prerequisites:
   - Basic understanding of GitHub Copilot agents
 ---

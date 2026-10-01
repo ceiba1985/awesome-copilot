@@ -120,6 +120,7 @@ export default defineConfig({
             "learning-hub/using-automations-in-copilot-app",
             "learning-hub/what-are-agents-skills-instructions",
             "learning-hub/agents-and-subagents",
+            "learning-hub/vscode-agent-host-and-copilot-harness",
             "learning-hub/understanding-copilot-context",
             "learning-hub/copilot-configuration-basics",
             "learning-hub/defining-custom-instructions",

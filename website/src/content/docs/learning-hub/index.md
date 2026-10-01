@@ -23,7 +23,9 @@ New to GitHub Copilot? Start here to understand the tools available to you.
 Essential concepts to tailor GitHub Copilot beyond its default experience. Start with
 [What are Agents, Skills, and Instructions](what-are-agents-skills-instructions/)
 and work through the full track to master every customization primitive. For delegation
-and orchestration patterns, continue with [Agents and Subagents](agents-and-subagents/).
+and orchestration patterns, continue with [Agents and Subagents](agents-and-subagents/). If
+you work in VS Code, see [VS Code Agent Host and the Copilot Harness](vscode-agent-host-and-copilot-harness/)
+for the new agent host architecture, multi-folder sessions, and remote agent host delegation.
 
 ## Reference
 
