@@ -3,7 +3,7 @@ title: 'Understanding MCP Servers'
 description: 'Learn how Model Context Protocol servers extend GitHub Copilot with access to external tools, databases, and APIs.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-02
 estimatedReadingTime: '8 minutes'
 tags:
   - mcp
@@ -67,10 +67,12 @@ MCP servers are configured per-workspace. GitHub Copilot CLI discovers server de
 |------|-------|-------|
 | `.mcp.json` | Repository root | Preferred for repo-shared configuration |
 | `.github/mcp.json` | Repository `.github/` folder | Auto-loaded workspace config (v1.0.61+) |
-| `.vscode/mcp.json` | VS Code workspace | VS Code–compatible workspace config |
+| `.vscode/mcp.json` | VS Code workspace | Deprecated workspace location — VS Code 1.140 now points new workspace servers at `.mcp.json` instead |
 | `devcontainer.json` | Dev container | Available when running inside a container |
 
 > **Security**: Workspace MCP servers are loaded **only after folder trust is confirmed**. If you haven't explicitly trusted a folder, servers defined in its config files won't start — protecting you from malicious MCP server configurations in untrusted repositories.
+
+**Global configuration (VS Code 1.140+)**: VS Code's **MCP: Add Server** flow now offers a **Copilot Global** destination that writes to `$COPILOT_HOME/mcp-config.json` (or `~/.copilot/mcp-config.json` when `COPILOT_HOME` is unset). Choosing this option makes a server available across every compatible Copilot surface — VS Code, CLI, and the Copilot app — instead of a single editor's user profile. The legacy per-editor user configuration still works but is marked deprecated in the picker.
 
 Example `.mcp.json` or `.vscode/mcp.json`:
 

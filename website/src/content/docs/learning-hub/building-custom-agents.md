@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-10-02
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -82,6 +82,18 @@ description: 'Thorough security audit for OWASP vulnerabilities'
 model: Claude Sonnet 4
 reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
+---
+```
+
+**include-custom-instructions** *(v1.0.86+)*: By default, custom agents run without the repository's standing instruction files. Set `include-custom-instructions: true` to opt a specific agent into reading `AGENTS.md`, `copilot-instructions.md`, and `CLAUDE.md` alongside its own frontmatter instructions — useful when an agent should still respect team-wide conventions rather than only its own persona:
+
+```yaml
+---
+name: 'API Design Reviewer'
+description: 'Reviews API designs for consistency with team conventions'
+model: Claude Sonnet 4
+include-custom-instructions: true
+tools: ['codebase', 'github']
 ---
 ```
 
@@ -254,13 +266,15 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 
 | Scenario | Recommended Model |
 |----------|-------------------|
-| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
-| Complex reasoning, analysis | Claude Sonnet 4 |
-| Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
+| Most demanding reasoning, security review | Claude Opus 5.5 *(v1.0.89+)*, Claude Sonnet 5 *(v1.0.67+)* |
+| Complex reasoning, analysis | Claude Sonnet 4, GPT-6 Sol *(v1.0.89+)* |
+| Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)*, GPT-6 Astra *(v1.0.85+)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)*, kimi-k3 *(v1.0.79+)* |
 | Quick analysis, simple tasks | Claude Haiku or GPT-4.1-mini |
 | Large codebase understanding | Models with larger context windows |
+
+> **Note**: New model names roll out frequently. Use `/model` (or the `opus`, `sonnet`, `gpt` family aliases described in [Copilot Configuration Basics](../copilot-configuration-basics/)) to see what's currently available rather than hardcoding a specific version in your agent frontmatter.
 
 ### Organizing Agents in Your Repository
 

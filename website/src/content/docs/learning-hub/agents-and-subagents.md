@@ -3,8 +3,8 @@ title: 'Agents and Subagents'
 description: 'Learn how delegated subagents differ from primary agents, when to use them, and how to launch them in VS Code and Copilot CLI.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
-estimatedReadingTime: '9 minutes'
+lastUpdated: 2026-10-02
+estimatedReadingTime: '10 minutes'
 tags:
   - agents
   - subagents
@@ -108,6 +108,16 @@ Then summarize the findings into one recommendation.
 ### 4. Know the nesting rule
 
 By default, subagents do not keep spawning additional subagents. In VS Code, recursive delegation is controlled by the `chat.subagents.allowInvocationsFromSubagents` setting, which is off by default.
+
+### Session-level orchestration (VS Code 1.140+)
+
+Beyond single-session subagents, VS Code's Agents window now supports coordinating **multiple chats and sessions** as part of the same piece of work:
+
+- **Multi-folder sessions (Experimental)**: A main chat can create peer chats that each use their own folder or worktree, so one session can coordinate work across repositories or isolated worktrees without changes leaking between chats. Enable it per agent host with `chat.agentHost.copilotAgent.multiRootEnabled` (and the Claude/Codex equivalents).
+- **Remote delegation (Experimental)**: An agent can discover connected remote agent hosts with the built-in `list_agent_hosts` tool, delegate a task to one, and get results back via `send_remote_message` — without you manually picking a host for each task. Enable with `chat.remoteAgentHostsEnabled` and `chat.remoteSessions.tools.enabled`.
+- **Higher orchestration limits**: VS Code 1.140 raised the process-wide limits on agent-created sessions, chats, and inter-session messages (`chat.agentHost.agentOrchestrationLimits`), so coordination-heavy workflows — like classifying several CI failures and delegating each fix to its own session — are less likely to stop before the work finishes.
+
+This is a different layer from in-session subagents: multi-folder sessions and remote delegation coordinate separate chats/sessions (each with its own worktree, terminal, and PR), while subagents stay inside one session's context.
 
 ## Launch subagents in Copilot CLI
 
