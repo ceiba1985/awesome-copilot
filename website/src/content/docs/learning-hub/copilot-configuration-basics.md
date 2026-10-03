@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-03
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -457,7 +457,9 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Auto routing tiers** *(v1.0.85+ / v1.0.89+)*: Auto mode now exposes named routing **tiers** (for example `Balance`) that describe how aggressively it escalates between fast and capable models. The CLI suggests a tier and lets you switch with a keyboard shortcut or a click; after you manually switch away from Auto to a specific model, a quick feedback prompt appears so you can tell the CLI whether that override worked well for the task. Organizations can set strict or user-overridable startup defaults for the Auto tier (v1.0.87+). The previously experimental **Fast** profile has been removed — a stored, exported, or resumed `Fast` preference now falls back to **Balance** instead of routing on it, and cycling through tiers in `/model` works correctly again (v1.0.89+).
+
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), and **Claude Opus 5.5** (v1.0.89+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. The model picker's autocomplete also resolves model IDs directly in `/model` and `/model plan` argument pickers (v1.0.90+), and GPT-6 Sol, GPT-6 Luna, and GPT-6.1 Sol have been added to the catalog as they roll out (v1.0.89+/v1.0.90+).
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -470,6 +472,10 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 When you leave plan mode, the CLI automatically reverts to your session model. This pairing works well with repository model pinning — you can enforce a high-quality model for implementation while allowing a lighter model during exploration and planning.
 
 ### CLI Session Commands
+
+**Vim mode** *(v1.0.85+)*: Enable modal editing in the composer with `/vim`, or set `editorMode` to `vim` in your config. The current mode (normal or insert) is shown while you type, so you always know which mode is active.
+
+**`/config` sidebar** *(v1.0.85+)*: Opens a sidebar configuration screen directly in the CLI for browsing and adjusting settings without leaving your session — a lighter-weight companion to the full-screen `/settings` dialog.
 
 The `/settings` command (v1.0.61+) opens an interactive dialog to browse and edit all user settings in one place. Use it to discover available settings, toggle options, and update values without manually editing your config file:
 
@@ -598,6 +604,14 @@ Unlike `/worktree` (which keeps the current conversation), `/new-worktree` is th
 ```
 /worktree new my-feature-branch
 ```
+
+**`worktreePathTemplate` setting** *(v1.0.87+)*: Controls where `/worktree`, `/move`, `/new`, and `--worktree` create worktrees, using a path template with placeholders: `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}`. For example:
+
+```
+~/src/worktrees/{repo}/{branch}
+```
+
+Leaving this setting unset keeps the existing layout — `<repo>.worktrees/` with slashes in the branch name flattened to dashes.
 
 The `/every` command (also available as `/loop` since v1.0.64) schedules a recurring prompt to run automatically at a specified interval. The companion `/after` command runs a prompt once after a specified delay. Both are useful for self-paced automation — polling for results, periodically summarizing progress, or triggering other slash commands on a timer:
 

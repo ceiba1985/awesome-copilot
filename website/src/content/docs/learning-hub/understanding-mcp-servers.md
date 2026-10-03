@@ -3,7 +3,7 @@ title: 'Understanding MCP Servers'
 description: 'Learn how Model Context Protocol servers extend GitHub Copilot with access to external tools, databases, and APIs.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-03
 estimatedReadingTime: '8 minutes'
 tags:
   - mcp
@@ -212,6 +212,8 @@ Some MCP servers require authentication to connect to protected resources. GitHu
 - **Microsoft Entra ID (Azure AD)**: MCP servers that authenticate via Microsoft Entra ID are fully supported. Once you complete the initial login, the CLI caches the authentication and **will not show the consent screen on subsequent connections** — you authenticate once per session rather than every time the server reconnects.
 - **API keys via environment variables**: Pass secrets through the `env` field in the MCP server configuration (see examples above). Never hardcode credentials in `.mcp.json`.
 - **`${input:variableName}` prompts**: VS Code will prompt for these values at runtime, keeping secrets out of committed files.
+- **GitHub MCP server scope escalation**: Scope upgrades for the built-in `github-mcp-server` now use the CLI's registered OAuth app `/callback` redirect URI (v1.0.88+), and the server connects reliably on first CLI startup right after sign-in (v1.0.89+).
+- **`--mcp-github-auth`** *(v1.0.90+)*: Scopes your GitHub account authentication to only the MCP server origins you explicitly approve, rather than sharing it broadly with every configured server.
 
 > **Tip**: If your MCP server uses OAuth with Dynamic Client Registration but hosts its authorization metadata at a non-standard URL (as some enterprise servers like Atlassian Rovo do), Copilot CLI handles this automatically.
 

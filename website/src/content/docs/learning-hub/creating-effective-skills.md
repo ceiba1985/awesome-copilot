@@ -3,7 +3,7 @@ title: 'Creating Effective Skills'
 description: 'Master the art of writing reusable, shareable skill folders that deliver consistent results across your team.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-13
+lastUpdated: 2026-10-03
 estimatedReadingTime: '9 minutes'
 tags:
   - skills
@@ -382,6 +382,8 @@ copilot skill remove my-skill           # remove an installed skill by name
 ```
 
 You can also run `/skill` (or the existing `/skills`) inside an interactive session to see what's loaded. The `copilot skill` subcommand is the recommended way to install skills that aren't packaged inside a plugin.
+
+**Namespaced and ignored skill directories** *(v1.0.88+)*: Skill discovery now supports namespacing custom skills (so same-named skills from different sources don't collide) and respects explicitly ignored skill directories, giving you finer control over which skills load in a given project.
 
 **Q: How are skills different from prompts?**
 

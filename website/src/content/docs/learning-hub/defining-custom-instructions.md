@@ -3,7 +3,7 @@ title: 'Defining Custom Instructions'
 description: 'Learn how to create persistent, context-aware instructions that guide GitHub Copilot automatically across your codebase.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
+lastUpdated: 2026-10-03
 estimatedReadingTime: '8 minutes'
 tags:
   - instructions
@@ -172,6 +172,10 @@ When the instruction file is loaded, the referenced files are read and their con
 - Paths are resolved relative to the instruction file's location
 - Referenced files do not need to be instruction files themselves — plain Markdown files work
 - Imports can be nested (a file you import can itself import other files)
+
+### Claude Code Rule File Compatibility
+
+*(v1.0.89+)* Copilot CLI also reads rule files from `.claude/rules/` as custom instructions, alongside the native `.instructions.md` format. If your repository (or a teammate's setup) already has Claude Code rule files checked in, Copilot CLI picks them up automatically without any conversion step — useful for teams migrating gradually between tools or maintaining compatibility with both.
 
 
 
