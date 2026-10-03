@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-10-03
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -72,6 +72,32 @@ tools: ['codebase', 'terminal', 'github']
 **description** (required): A clear summary of what the agent does. This is shown in the agent picker and helps users find the right agent.
 
 **model** (recommended): The AI model that powers the agent. Choose based on the complexity of the task—use more capable models for nuanced reasoning.
+
+**Multiple model fallbacks** *(v1.0.83+)*: `model` can also be a **list** of models, tried in order until one is available to the current user:
+
+```yaml
+---
+name: 'Security Reviewer'
+description: 'Thorough security audit for OWASP vulnerabilities'
+model: ['claude-opus-5', 'claude-sonnet-4.6', 'gpt-6']
+model-policy: required
+tools: ['codebase', 'terminal', 'github']
+---
+```
+
+Setting `model-policy: required` keeps model changes restricted to models on that list — the user cannot switch the agent to an arbitrary model outside the fallback chain. This is useful for agents that need a specific family of models to behave correctly, while still tolerating unavailability of the first choice.
+
+**include-custom-instructions** *(v1.0.86+)*: By default, custom agents run without picking up repository instruction files. Set `include-custom-instructions: true` in the frontmatter to opt an agent into reading `AGENTS.md`, `copilot-instructions.md`, and `CLAUDE.md` from the repository, layering repo-wide conventions on top of the agent's own persona:
+
+```yaml
+---
+name: 'Security Reviewer'
+description: 'Thorough security audit for OWASP vulnerabilities'
+model: Claude Sonnet 4
+include-custom-instructions: true
+tools: ['codebase', 'terminal', 'github']
+---
+```
 
 **reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`:
 

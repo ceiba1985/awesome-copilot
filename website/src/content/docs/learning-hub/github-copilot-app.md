@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-03
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -98,6 +98,22 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 ### Requesting Code Reviews
 
 From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+
+### Child Chats
+
+**Child chats** *(v1.1.26+)*: Any chat can spawn child chats that appear nested beneath their parent in the sidebar, each with its own transcript, notifications, and plan review. This is useful for branching off a side investigation or sub-task without losing the context of the original conversation—switch back to the parent at any time.
+
+### Local Sandbox for Agent Commands
+
+**Sandboxed shell commands** *(v1.1.23+)*: A project setting and `/sandbox` command let you restrict the agent's shell commands to the session's workspace, limiting filesystem access for extra safety when running agent-generated code.
+
+### Voice Dictation
+
+**Voice dictation** *(v1.1.24+)* is no longer experimental and is turned on by default, with a mic button in the composer, a dedicated Voice dictation tab in Settings, and its own keyboard shortcut.
+
+### Dynamic Workflows (formerly Agent Factories)
+
+**Agent Factories** has been renamed to **Dynamic Workflows** *(v1.1.26+)*, while preserving existing workflow runs and transcripts. If you previously configured scheduled Agent Factories, they continue to work under the new name.
 
 ## Who is the Copilot app for?
 
