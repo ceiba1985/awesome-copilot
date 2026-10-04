@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-04
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -71,6 +71,14 @@ This makes it easy to dispatch multiple agents and trust they won't interfere wi
 ### Running in the Background
 
 Closing the app's main window keeps it running in the background instead of quitting, with tray (Windows/Linux) or Dock (macOS) support to bring it back. This means scheduled automations and in-progress sessions keep running even when the window isn't open.
+
+### Child Chats for Nested Work
+
+**New (v1.1.24+)**: A session can now contain more than one chat. The main chat can start **child chats** that are nested beneath it in the sidebar, each with its own transcript, notifications, and plan review. This is useful for spinning off a focused side-task—like a quick review or a parallel investigation—without losing the context of your primary conversation.
+
+When a child chat finishes its work, select **Mark as Done** (v1.1.25+) to archive just that chat while keeping the rest of the session active. Use the **Done** filter in the sessions list to restore it later with its title and transcript intact.
+
+You can also run Bash and PowerShell code snippets directly from a conversation in the session's terminal (v1.1.26+), and drag and drop files from your computer onto a session or Agent in the sidebar to attach them to that session's composer.
 
 ### Canvases
 
