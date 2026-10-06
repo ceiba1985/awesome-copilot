@@ -438,6 +438,17 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+**`copilot config` subcommands** *(v1.0.92+)*: Manage settings directly from the command line without opening the interactive `/settings` dialog — useful for scripting, CI, or quickly checking a value:
+
+```bash
+copilot config list                  # list all current settings
+copilot config get editorMode        # read a single setting
+copilot config set editorMode vim    # set a setting
+copilot config remove editorMode     # remove a setting override
+```
+
+**Pre-conversation environment picker** *(v1.0.92+)*: Press **Ctrl+E** before starting a conversation to switch between running locally and running on a remote/cloud environment, without needing a separate flag or command at startup.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -457,7 +468,7 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+) and **claude-opus-5.5** (v1.0.89+) from Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. **GPT-6 Astra** (v1.0.85+), **GPT-6 Sol** and **GPT-6 Luna** (v1.0.89+), and **GPT-6.1 Sol** (v1.0.92+) round out newer additions to the OpenAI family in the model picker. Since the model catalog changes frequently, the CLI periodically **removes retired models** (v1.0.92+) from the model picker and supported selections — if a model you relied on disappears, switch to its successor via `/model` or a family alias.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -834,6 +845,18 @@ These flags apply only to the current invocation — your persisted sandbox pref
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
+
+**`copilot sandbox ca` commands** *(v1.0.91+)*: Manage the proxy certificate authority the sandbox uses to intercept and inspect network traffic, including unattended setup on Windows:
+
+```bash
+copilot sandbox ca check    # check whether the proxy CA is trusted
+copilot sandbox ca create   # create a new proxy CA
+copilot sandbox ca trust    # trust the proxy CA on this machine
+copilot sandbox ca rotate   # rotate the proxy CA
+copilot sandbox ca remove   # remove the proxy CA
+```
+
+These replace the old `/sandbox ca install` command, which is now split into `create` and `trust`. In v1.0.92+, these commands also respect `--config-dir` (including when combined with `-C`).
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
 

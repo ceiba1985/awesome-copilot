@@ -104,6 +104,7 @@ Treat `joinSession` + `createCanvas` as the contract between UI interactions and
 - Define clear canvas actions and schemas in `createCanvas(...)`
 - Keep action names verb-oriented and predictable (`get_*`, `apply_*`, `sync_*`)
 - Return structured state from handlers so both the UI and agent remain in sync
+- As of the Copilot CLI v1.0.92+ SDK, `invoke_canvas_action` handlers can also return **images** to the model (not just structured state/text) — useful for canvases that render charts, previews, or diagrams the agent should "see" as part of its next turn
 
 Reference implementations:
 
