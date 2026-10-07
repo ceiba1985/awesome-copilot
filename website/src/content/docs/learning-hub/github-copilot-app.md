@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-07
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -98,6 +98,20 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 ### Requesting Code Reviews
 
 From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+
+### Child Chats and In-Session Terminal Actions (v1.1.26+)
+
+Chats can now start **child chats** that appear nested beneath their parent in the sidebar, each with its own transcript, notifications, and plan review — useful for branching off a side investigation without losing the parent conversation's context.
+
+You can also run Bash and PowerShell code snippets from a conversation directly in the session's terminal, reusing an existing shell when one is already open, instead of copying the snippet out to a separate terminal window.
+
+### Drag-and-Drop Attachments and Composer Permissions (v1.1.26+)
+
+Drag files from your computer and drop them onto a session or Agent in the sidebar to attach them to that session's composer. You can also set tool permissions directly from the composer's mode menu, in addition to the existing `/permissions` slash command.
+
+### Local Sandboxing (v1.1.23+)
+
+A project setting and `/sandbox` command let you run the agent's shell commands in a local sandbox restricted to the session's workspace, limiting filesystem access the same way VS Code's Copilot harness sandboxing does (see [Copilot Configuration Basics](../copilot-configuration-basics/#vs-code)).
 
 ## Who is the Copilot app for?
 

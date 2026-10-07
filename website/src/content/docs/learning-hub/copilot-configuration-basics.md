@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-07
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -388,6 +388,12 @@ Settings file: `.vscode/settings.json` or global user settings
 }
 ```
 
+**Copilot harness (VS Code 1.141+)**: VS Code's Agents window can now run agent sessions through the **Copilot harness**, which is powered by the same Copilot SDK used by the standalone GitHub Copilot app and Copilot CLI. Select it from the harness picker in the chat input — it runs in a dedicated agent host process based on the Agent Host Protocol (AHP), so multiple VS Code windows can connect to and share the same session.
+
+**Agent sandboxing (VS Code 1.141+)**: Enable `chat.agent.sandbox.enabled` (or toggle **Sandboxing for terminal** in the session's Permissions menu) to restrict what agent-run terminal commands can access on Windows, macOS, and Linux. Sandboxing limits filesystem and network access to help reduce the impact of model mistakes, prompt injection, and untrusted dependencies; it adds a layer of protection but does not replace endpoint security. Locally launched MCP and language servers are sandboxed by default when the setting is enabled, and the same restrictions apply to connected remote sessions (enforced on the remote host).
+
+**Worktree cleanup (VS Code 1.141+)**: Run **Chat: Open Worktree Cleanup** to see how much disk space inactive agent session worktrees are using and remove the ones you no longer need, or enable `chat.agentSessions.sessionStorageCleanupSuggestion.enabled` to get a notification when cleanup would help.
+
 ### Visual Studio
 
 Settings: Tools → Options → GitHub Copilot
@@ -438,6 +444,19 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+> **`copilot config` subcommands (v1.0.92+)**: Manage settings directly from the shell without opening the interactive `/config` panel — useful for scripting and CI setup:
+>
+> ```bash
+> copilot config list              # list all current settings
+> copilot config get effortLevel   # read a single setting
+> copilot config set effortLevel high
+> copilot config remove proxy      # remove a setting (revert to default)
+> ```
+
+> **Environment picker (v1.0.92+)**: Press **Ctrl+E** before starting a conversation to open a picker that switches between running the next session locally or delegating it to a cloud run, without leaving the CLI.
+
+> **Custom agent model stability (v1.0.92+)**: Custom agent model entries now keep their model-bound reasoning effort setting only while that specific model is selected, preventing a mismatched effort level from leaking in when you switch models mid-session.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -458,6 +477,10 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+
+**More recent model additions**: **GPT-6 Sol** and **GPT-6 Luna** (v1.0.89+ and v1.0.90+) and **claude-opus-5.5** (v1.0.89+) joined the model picker. **GPT-6.1 Sol** (v1.0.90+) followed as a refreshed point release. The CLI periodically retires older models from the picker and supported CLI selections (v1.0.92+) as newer ones become the recommended default, so check the model picker if a previously pinned model name stops resolving.
+
+**Auto routing tier feedback** (v1.0.89+): Auto mode now suggests a routing tier and lets you switch with a shortcut or click, and shows a quick feedback prompt after you switch away from a manually selected model to help tune future suggestions.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
