@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-08
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -438,6 +438,19 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+> **`copilot config` subcommands (v1.0.92+)**: Manage settings directly from the command line without opening the interactive `/settings` dialog — useful for scripting and CI:
+>
+> ```bash
+> copilot config list                     # list all settings and current values
+> copilot config get effortLevel          # read a single setting
+> copilot config set effortLevel high     # set a setting
+> copilot config remove effortLevel       # remove a setting override
+> ```
+
+> **Sandbox CA management (v1.0.91+)**: The `copilot sandbox ca` command group checks, creates, trusts, rotates, and removes the proxy certificate authority used by sandboxed network requests, including unattended setup on Windows. The former `/sandbox ca install` command is now split into `create` and `trust` steps.
+
+> **Enterprise network permission boundaries (v1.0.93+)**: Organizations can set `permissions.limitTo` in managed settings to enforce managed-domain boundaries for sandboxed network requests, restricting outbound traffic to an allowed domain list regardless of individual session settings.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -458,6 +471,8 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+
+**Model picker updates** *(v1.0.92+)*: The recommended model list now prioritizes the newest flagship models (GPT-6.1 Sol, GPT-6 Astra/Luna, and Claude 5.5) at the top of the picker, and `/model` autocompletes model IDs directly as you type in both `/model` and `/model plan` argument pickers.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 

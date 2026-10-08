@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-08
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -262,6 +262,8 @@ copilot --plugin-dir /path/to/my-plugin
 ```
 
 Plugins loaded this way appear in `/plugin list` under a separate **External Plugins** section, clearly distinguished from marketplace-installed plugins. This is useful for testing local plugins in development or loading private plugins that aren't published to any marketplace.
+
+> **Enable/disable for direct installs (v1.0.90+)**: Direct plugin installs (those installed from a repository URL, raw URL, or local path rather than a marketplace) can now be enabled and disabled individually. A plugin recorded as disabled stops loading on the next session start; re-enable it at any time with `copilot plugin enable <plugin-name>`.
 
 ### Where Plugins Are Stored
 

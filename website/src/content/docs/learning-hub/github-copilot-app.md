@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-08
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -98,6 +98,24 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 ### Requesting Code Reviews
 
 From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+
+### Dynamic Workflows (formerly Agent Factories)
+
+**Dynamic Workflows** let you define a multi-step, multi-agent workflow once and re-run it on demand—for example, a workflow that plans a change, implements it, and then runs a dedicated review pass, each step potentially using a different agent or model. This feature was renamed from **Agent Factories** to **Dynamic Workflows**; existing workflow runs and transcripts carry over unchanged under the new name. Pause and resume in-progress runs from the workflow dialog if you need to step away or adjust the next phase.
+
+**HydraFusion** is a related capability for running the same prompt through multiple models or configurations in parallel passes and comparing results. When you use HydraFusion, the conversation shows which workflow was chosen and a row for each pass with its role, model, and duration, making it easy to see which configuration produced the best outcome.
+
+### Child Chats and Coordinator Agents
+
+*(New)* Chats can now start **child chats**, nested beneath their parent in the sidebar with their own transcript, notifications, and plan review—useful for breaking a large task into sub-conversations without losing the parent context. If a coordinator agent and its child sessions are interrupted, you can resume the coordinator and all of its children directly from the sidebar without leaving your current conversation.
+
+### Prompt History and Response Retry
+
+*(New)* Press **Ctrl+R** (**Cmd+R** on macOS) to search and reuse your previous prompts across all sessions from a focused composer, instead of scrolling back through old conversations. You can also **retry** any agent response with a different model, reasoning effort, or context tier, without starting a new session—useful when a response used the wrong model or you want to compare reasoning levels on the same request.
+
+### Voice Dictation
+
+*(New)* Voice dictation is no longer experimental and is turned on by default, with a mic button in the composer and a dedicated **Voice dictation** tab in Settings.
 
 ## Who is the Copilot app for?
 
