@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-09
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -438,6 +438,10 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+**`copilot config` subcommands** *(v1.0.92+)*: Manage settings directly from the command line with `copilot config list`, `copilot config get <key>`, `copilot config set <key> <value>`, and `copilot config remove <key>` — useful for scripting configuration changes without opening the interactive `/settings` dialog.
+
+**`/config` sidebar** *(v1.0.85+)*: In addition to `/settings`, the `/config` command opens a dedicated sidebar configuration screen in the CLI for a faster, more compact view of your options.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -446,6 +450,8 @@ In addition to the main config file, GitHub Copilot CLI reads two optional per-p
 These files follow the same format as `config.json` and are loaded after the global config, so they can tailor CLI behaviour—including hook definitions—per repository without touching `.github/`.
 
 > **Important (v1.0.36+)**: Custom agents, skills, and commands placed in `~/.claude/` (the Claude Code user directory) are **no longer loaded** by GitHub Copilot CLI. Only `~/.claude/settings.json` is read for configuration. If you previously stored personal agents or skills in `~/.claude/`, move them to the supported locations: `~/.copilot/agents/` for user-level agents, `~/.copilot/skills/` or `~/.agents/skills/` for personal skills, or `.github/agents/` and `.github/skills/` in your repositories for project-level customizations.
+
+> **Claude Code rule files (v1.0.89+)**: Rule files in `.claude/rules` are now read as custom instructions, in addition to the existing `.claude/settings.json` support — helpful if you're migrating a repository that already uses Claude Code conventions.
 
 ### Model Picker
 
@@ -457,7 +463,9 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. More recently, **GPT-6 Astra** (v1.0.85+), **GPT-6 Sol and GPT-6 Luna** (v1.0.89+), **Claude Opus 5.5** (v1.0.89+), and **Claude Haiku 5.5** (v1.0.94+) have joined the model picker. Retired Claude and Gemini models are periodically removed from the picker as newer versions become the recommended default.
+
+**Auto routing tiers** *(v1.0.87+)*: Auto mode now exposes selectable **routing tiers** (such as Balance) instead of a single opaque routing behavior. The CLI suggests a tier and lets you switch with a shortcut or click, and Auto continues to adapt model selection as your task evolves during a conversation. Enterprise admins can set **user and managed startup defaults** for the Auto routing tier, including a strict, non-overridable policy or a user-overridable default.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -775,6 +783,8 @@ The `/permissions` command *(v1.0.78+)* opens an interactive picker for switchin
 
 Use `/permissions` as a quick mode switcher when you want to change how the agent handles tool approvals without remembering individual command names.
 
+**Assisted Permissions** *(v1.0.94+)*: The LLM-judged approval mode (previously `/allow-all auto`) is now called **Assisted Permissions** and sends the visible shell code for a command directly to the permission judge, rather than requiring unnecessary manual approval for commands the judge could otherwise evaluate. Organizations can set a managed policy that disables Assisted Permissions entirely and keeps sessions in **Manual Approval** mode, where every tool call requires explicit confirmation.
+
 The `--effort` flag (shorthand for `--reasoning-effort`) controls how much computational reasoning the model applies to a request:
 
 ```bash
@@ -832,6 +842,12 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+**`copilot sandbox ca` commands** *(v1.0.91+)*: Command sandboxing's proxy CA trust is now managed with dedicated `copilot sandbox ca` subcommands — `check`, `create`, `trust`, `rotate`, and `remove` — including unattended Windows setup. The previous `/sandbox ca install` is now split into `create` and `trust`. As of v1.0.93, command sandboxing via `/sandbox` and `--sandbox` is available to **all users**, not just those in an earlier preview.
+
+**Enterprise network boundaries** *(v1.0.93+)*: The `permissions.limitTo` managed setting lets enterprises enforce domain boundaries for network requests made from sandboxed sessions.
+
+**GitHub.com Connectors**: GitHub.com Connector users can expand GitHub CLI permissions in place and retry connections without switching sign-in methods, and connecting a Connector without the required GitHub scope now prompts to update your authorization instead of failing with a generic authentication error. Managed Connector consent shows progress with a copyable authorization URL during connect and reconnect.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
@@ -931,3 +947,8 @@ Now that you understand Copilot configuration, explore how to create powerful cu
 - **[Defining Custom Instructions](../defining-custom-instructions/)** - Create persistent context for your projects
 - **[Creating Effective Skills](../creating-effective-skills/)** - Build reusable task folders with bundled assets
 - **[Building Custom Agents](../building-custom-agents/)** - Develop specialized assistants
+
+## Further Reading
+
+- **[GitHub Copilot CLI changelog](https://github.com/github/copilot-cli/blob/main/changelog.md)** - The authoritative, release-by-release log of new settings, commands, and models referenced throughout this article
+- **[GitHub Copilot CLI releases](https://github.com/github/copilot-cli/releases)** - Download links and release notes for every published version
