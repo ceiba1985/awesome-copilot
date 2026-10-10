@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-10
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -438,6 +438,23 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+**Managing settings from the command line (v1.0.92+)**: `copilot config` gained `list`, `read`, `set`, and `remove` subcommands, so you can inspect and change settings scriptably without opening `/settings` or hand-editing `config.json`:
+
+```bash
+copilot config list                    # show all current settings
+copilot config read effortLevel        # read a single setting
+copilot config set effortLevel high    # set a setting
+copilot config remove sessionLimits    # remove a setting, reverting to default
+```
+
+There's also `/config` (v1.0.85+), a sidebar configuration screen inside the interactive CLI for browsing and editing settings without leaving your session.
+
+> **Sandbox network allow/deny rules (v1.0.85+)**: `/sandbox` gained network host allow/deny rules that layer on top of your configured upstream proxy instead of replacing it, giving you finer-grained control over which hosts sandboxed commands can reach.
+
+> **Proxy CA trust management (v1.0.91+)**: `copilot sandbox ca` adds subcommands to check, create, trust, rotate, and remove the sandbox's proxy CA trust, including unattended setup on Windows. The former `/sandbox ca install` command is now split into separate `create` and `trust` steps.
+
+> **Enterprise network boundaries (v1.0.93+)**: The managed `permissions.limitTo` setting lets administrators enforce domain boundaries for network requests made during a session, restricting sandboxed and unsandboxed commands alike to an approved list of hosts.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -458,6 +475,8 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+
+More recent additions to the model picker include **GPT-6 Astra** and **GPT-6 Luna** (v1.0.89+), **claude-opus-5.5** (v1.0.89+), **GPT-6.1 Sol** (v1.0.90+), and **Claude Haiku 5.5** (v1.0.94+). Auto mode (v1.0.89+) now also suggests a routing tier and shows a quick feedback prompt after you manually switch away from its recommendation, and the recommended list (v1.0.94+) prioritizes GPT-6.1 Sol, GPT-6 Astra/Luna, and Claude 5.5 models.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 

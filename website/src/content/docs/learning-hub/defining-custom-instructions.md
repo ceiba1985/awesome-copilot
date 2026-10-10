@@ -3,7 +3,7 @@ title: 'Defining Custom Instructions'
 description: 'Learn how to create persistent, context-aware instructions that guide GitHub Copilot automatically across your codebase.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
+lastUpdated: 2026-10-10
 estimatedReadingTime: '8 minutes'
 tags:
   - instructions
@@ -173,7 +173,9 @@ When the instruction file is loaded, the referenced files are read and their con
 - Referenced files do not need to be instruction files themselves — plain Markdown files work
 - Imports can be nested (a file you import can itself import other files)
 
+## Interoperability with Other AI Tool Rule Formats
 
+*(v1.0.89+)* GitHub Copilot CLI reads **Claude Code rule files** in `.claude/rules/` as custom instructions, alongside its own `.instructions.md` format, `AGENTS.md`, and `CLAUDE.md`. If your repository already has Claude Code rules committed for another assistant, Copilot CLI picks them up automatically instead of requiring a parallel, duplicated set of instruction files.
 
 The awesome-copilot-hub repository includes over 120 instruction files demonstrating real-world patterns.
 

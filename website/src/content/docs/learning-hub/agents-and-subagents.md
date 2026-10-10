@@ -3,7 +3,7 @@ title: 'Agents and Subagents'
 description: 'Learn how delegated subagents differ from primary agents, when to use them, and how to launch them in VS Code and Copilot CLI.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
+lastUpdated: 2026-10-10
 estimatedReadingTime: '9 minutes'
 tags:
   - agents
@@ -193,6 +193,8 @@ That means you should think about delegation features in product-specific terms:
 - **GitHub.com coding agent / cloud agent**: supports custom agents, but some VS Code-specific frontmatter is intentionally ignored
 
 If you share agent files across surfaces, document those differences so users know which behaviors are portable and which are editor-specific.
+
+> **GitHub Copilot app (v1.1.28+)**: Custom agents in the GitHub Copilot app can now suggest next steps after their final response, letting you switch to a different agent with a pre-filled, editable prompt you review before sending. This is a lighter-weight, user-driven alternative to `handoffs` frontmatter — the agent proposes a transition, but you decide whether to accept it.
 
 ## Common questions
 

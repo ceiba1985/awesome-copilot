@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-10
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -258,6 +258,8 @@ The Copilot app respects all your existing GitHub Copilot customizations:
 - **Setup steps** (`.github/copilot-setup-steps.yml`)
 
 If you haven't set up custom agents, skills, or instructions yet, see [Copilot Configuration Basics](../copilot-configuration-basics/) to get started.
+
+> **New (v1.1.28+)**: If your enterprise manages a plugin marketplace, the **Customize** page gains a **"From your organization"** tab that surfaces the plugins your organization provides, alongside the public `awesome-copilot` marketplace. This makes it easier to discover internally curated agents, skills, and hooks without leaving the app.
 
 ## Common Workflows
 
