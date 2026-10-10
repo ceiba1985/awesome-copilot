@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-10-10
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -96,6 +96,18 @@ tools: ['codebase', 'terminal', 'github']
 | `edit` | Modify files in the workspace |
 
 For MCP server tools, reference them by server name (e.g., `postgres`, `docker`). See [Understanding MCP Servers](../understanding-mcp-servers/) for details.
+
+**target** *(VS Code 1.106+)*: An optional frontmatter property that describes how an agent should run across environments:
+
+- `target: vscode` optimizes the agent for local chat in VS Code and unlocks `name`, `description`, `argument-hint`, `model`, `tools`, and `handoffs` properties. Any tool installed in VS Code can be used.
+- `target: github-copilot` prepares the agent for Copilot cloud agents or the GitHub CLI, with support for `name`, `description`, `tools`, `mcp-servers`, and `target`. Tools are limited to `edit`, `search`, `shell`, `custom-agent`, and tools exposed by MCP servers.
+
+All agents can still run in all environments — each environment simply ignores attributes and tools it doesn't recognize. Two related properties were introduced alongside `target`:
+
+- **`argument-hint`**: surfaces guidance in the chat input so teammates know how to prompt the agent.
+- **`handoffs`**: wires guided transitions to other agents, letting you chain multi-step workflows (see [Agents and Subagents](../agents-and-subagents/) for portability caveats across surfaces).
+
+> **Terminology update (VS Code 1.106+)**: VS Code has renamed **chat modes** to **custom agents** throughout its UI to align with terminology used elsewhere in the Copilot ecosystem. Existing `.chatmode.md` files in `.github/chatmodes` continue to work and are automatically treated as custom agents; VS Code offers a quick fix to migrate them to `.agent.md` files in `.github/agents`.
 
 ### Agent Instructions
 
@@ -254,13 +266,15 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 
 | Scenario | Recommended Model |
 |----------|-------------------|
-| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
+| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)*, Claude Opus 5.5 *(v1.0.94+)* |
 | Complex reasoning, analysis | Claude Sonnet 4 |
-| Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
+| Code generation, tool-driven agentic work | GPT-6.1 Sol *(v1.0.90+)*, GPT-5.6 *(v1.0.70+)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)*, kimi-k3 *(v1.0.79+)* |
-| Quick analysis, simple tasks | Claude Haiku or GPT-4.1-mini |
+| Quick analysis, simple tasks | Claude Haiku 5.5 *(v1.0.94+)* or GPT-4.1-mini |
 | Large codebase understanding | Models with larger context windows |
+
+> **Model picker defaults** *(v1.0.95)*: The recommended model list now prioritizes GPT-6.1 Sol, GPT-6 Astra/Luna, and Claude 5.5-generation models. Run `/model` to see what's currently recommended and available for your plan.
 
 ### Organizing Agents in Your Repository
 
@@ -298,6 +312,10 @@ A: Yes. When you assign an issue to Copilot, you can specify which agent should 
 **Q: Should agents include code examples?**
 
 A: Yes, when defining output format or coding patterns. Show what you expect the agent to produce—review formats, code structure, commit message style, etc.
+
+**Q: What is the built-in Plan agent in VS Code?**
+
+A: VS Code 1.106 introduced a built-in **Plan** agent (select **Plan** from the agent dropdown in the Chat view) that breaks a complex task into a reviewable, step-by-step implementation plan before any code is written. It asks clarifying questions, then produces a plan you approve before Copilot implements it locally or via a cloud agent. You can use **Configure Custom Agent** to copy the built-in Plan agent as a starting point and tailor its planning style, tools, and prompts to your team's workflow.
 
 ## Common Pitfalls
 

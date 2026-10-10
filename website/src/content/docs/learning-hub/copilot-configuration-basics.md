@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-10
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -832,6 +832,42 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+**Sandbox network allow/deny rules** *(v1.0.85+)*: Add granular **Network host allow/deny rules** from `/sandbox` without replacing your configured upstream proxy — useful for allowing a handful of extra hosts (an internal package registry, a webhook endpoint) while keeping the rest of your proxy policy intact. As of v1.0.87, `/sandbox` is available to everyone (command sandboxing is no longer gated), and you can manage proxy CA trust directly with `copilot sandbox ca` subcommands (`check`, `create`, `trust`, `rotate`, `remove`), including unattended Windows setup — `/sandbox ca install` is now split into `create` and `trust`. On macOS and Linux (v1.0.83+), sandboxed commands can no longer reach services running on your own machine by default; turn on **Allow local network** in `/sandbox` if a test suite or local dev server needs to bind to `localhost`. Linux sandboxing requires `slirp4netns`, `nsenter`, `iptables`, `ip6tables`, and related binaries on `PATH`.
+
+### Vim Mode, `/config`, and Plugin Management *(v1.0.85+)*
+
+**Vim mode** is now available to everyone — turn it on with `/vim` or by setting `editorMode` to `vim` for modal editing in the composer, with the current mode shown while you type.
+
+The `/config` command opens a sidebar configuration screen directly in the CLI, giving you a quick way to review and adjust settings without leaving your session:
+
+```
+/config
+```
+
+Plugin, MCP, instruction, and LSP management commands were reorganized for consistency: `copilot instruction list` and `copilot lsp list` replace `copilot plugins list --kind instruction` / `--kind lsp`, and `enable`/`disable` subcommands were added to `copilot plugin`, `copilot mcp`, and `copilot skill`, replacing the older `copilot plugins enable/disable --plugin|--mcp|--skill` form:
+
+```bash
+copilot plugin enable my-plugin
+copilot mcp disable my-server
+copilot skill list
+```
+
+Add `--json` to `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` for scriptable output.
+
+### Worktree Path Templates and Model Updates *(v1.0.87+)*
+
+A `worktreePathTemplate` setting controls where `/worktree`, `/move`, `/new`, and `--worktree` create worktrees. Set it in `/settings`, for example:
+
+```
+~/src/worktrees/{repo}/{branch}
+```
+
+Supported placeholders are `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}`. Leaving it unset keeps the existing layout (`<repo>.worktrees/`, with slashes in branch names flattened to dashes).
+
+**New models**: Recent CLI releases have steadily expanded model support, including Claude Haiku 5.5, Claude Opus 5.5, GPT-6 Sol, GPT-6 Astra, GPT-6 Luna, and GPT-6.1 Sol (v1.0.85–1.0.95). The model picker's recommended list now prioritizes GPT-6.1 Sol, GPT-6 Astra/Luna, and Claude 5.5-generation models as of v1.0.95. Use `/model` to see the current recommended set for your account and plan.
+
+**Enterprise and auth updates** *(v1.0.90–1.0.95)*: Organizations can enforce `permissions.limitTo` to restrict network requests to managed domain boundaries, and pin sign-in to approved GitHub organizations with the `forceLoginOrgs` managed setting. On macOS, the CLI can use native Microsoft Entra broker authentication (with browser fallback) when available (v1.0.95+). `--mcp-github-auth` lets you scope GitHub account auth to approved MCP server origins (v1.0.90+).
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 

@@ -3,7 +3,7 @@ title: 'GitHub Copilot Terminology Glossary'
 description: 'A quick reference guide defining common GitHub Copilot and platform-specific terms.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-04-02
+lastUpdated: 2026-10-10
 estimatedReadingTime: '8 minutes'
 tags:
   - glossary
@@ -54,7 +54,7 @@ A native capability provided by GitHub Copilot without requiring additional conf
 
 **Deprecated terminology** - This term is no longer used. Use [Agent](#agent) instead.
 
-Previously, "chat mode" was an alternative term for [Agent](#agent) that described how GitHub Copilot Chat could be transformed into domain-specific assistants. The ecosystem has standardized on "Agent" as the preferred terminology.
+Previously, "chat mode" was an alternative term for [Agent](#agent) that described how GitHub Copilot Chat could be transformed into domain-specific assistants. The ecosystem has standardized on "Agent" as the preferred terminology. VS Code 1.106 completed this transition by renaming "chat modes" to "custom agents" throughout its UI and moving agent definition files from `.github/chatmodes` (`.chatmode.md`) to `.github/agents` (`.agent.md`). Existing `.chatmode.md` files continue to work and are automatically treated as custom agents.
 
 **See**: [Agent](#agent)
 
@@ -230,6 +230,26 @@ The autonomous GitHub Copilot agent that works on issues in a cloud environment 
 **Learn more**: [Using the Copilot Coding Agent](../using-copilot-coding-agent/)
 
 **Related terms**: [Agent](#agent), [Hook](#hook)
+
+---
+
+### Plan Agent
+
+A built-in VS Code agent (introduced in VS Code 1.106) that helps break down complex tasks into a reviewable, step-by-step implementation plan before any code is written. Select **Plan** from the agent dropdown in the Chat view to use it; VS Code prompts clarifying questions and produces a plan you approve before Copilot implements it, either locally or via a cloud agent. Teams can copy the built-in Plan agent with **Configure Custom Agent** to create their own tailored planning workflow.
+
+**When to use**: For multi-step implementations where capturing requirements and scope upfront reduces rework and catches gaps early.
+
+**Related terms**: [Agent](#agent), [Custom Agent](#custom-agent)
+
+---
+
+### Agent Sessions View
+
+A VS Code panel (enabled by default since VS Code 1.106) that provides a centralized overview of active chat sessions — both local sessions in the editor and sessions created by background and cloud agents such as Copilot coding agent or Copilot CLI. Configurable via the `chat.agentSessionsViewLocation` setting, it can show sessions grouped by source or consolidated into a single view.
+
+**When to use**: When you are juggling multiple parallel agent sessions (local, cloud, or CLI) and want one place to track and switch between them.
+
+**Related terms**: [Agent](#agent), [Coding Agent](#coding-agent)
 
 ---
 
