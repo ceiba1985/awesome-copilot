@@ -3,7 +3,7 @@ title: 'GitHub Copilot Terminology Glossary'
 description: 'A quick reference guide defining common GitHub Copilot and platform-specific terms.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-04-02
+lastUpdated: 2026-10-11
 estimatedReadingTime: '8 minutes'
 tags:
   - glossary
@@ -262,6 +262,20 @@ tools: ['codebase', 'terminalCommand', 'github']
 ```
 
 **Related terms**: [MCP](#mcp-model-context-protocol), [Built-in Tool](#built-in-tool), [Agent](#agent)
+
+---
+
+### Sandbox
+
+An OS-level isolation layer for shell commands run by GitHub Copilot CLI, restricting filesystem and network access to what the current session has been granted. Command sandboxing graduated from an experimental, opt-in feature to generally available for all users in v1.0.93, and is controlled with the `/sandbox` command or `--sandbox`/`--no-sandbox` startup flags.
+
+**Example**: With the sandbox enabled, a shell command that tries to write outside the session's approved directories, or reach a network host that isn't allowlisted, is blocked or prompts for an explicit bypass instead of running unrestricted.
+
+**When to use**: In any session where you want tool-use safety guarantees beyond manual approval prompts — especially useful alongside autopilot or allow-all modes, where you are not reviewing every command before it runs.
+
+**Learn more**: [Copilot Configuration Basics](../copilot-configuration-basics/)
+
+**Related terms**: [Tools](#tools), [Coding Agent](#coding-agent)
 
 ---
 

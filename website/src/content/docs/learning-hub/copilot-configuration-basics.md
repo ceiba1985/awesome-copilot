@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-11
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -431,8 +431,16 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `stayInAutopilot` | Keep the CLI in autopilot mode after an autopilot task completes, instead of returning to interactive mode (v1.0.69+) |
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
+| `editorMode` | Set to `vim` for modal (Vim-style) editing in the composer (v1.0.85+) |
+| `transcriptView` | Set to `concise` to group tool activity into expandable work summaries (v1.0.85+) |
+| `worktreePathTemplate` | Custom path template for `/worktree` and `--worktree`, e.g. `~/src/worktrees/{repo}/{branch}` (v1.0.87+) |
+| `slowConnectionThresholdMs` | Per-MCP-server threshold for slow-connection warnings (v1.0.87+) |
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
+
+> **`copilot config` subcommands (v1.0.92+)**: Use `copilot config list`, `copilot config get <key>`, `copilot config set <key> <value>`, and `copilot config remove <key>` to read and edit settings directly from a script or terminal, without opening the interactive `/settings` dialog. As of v1.0.93, user settings are read only from `~/.copilot/settings.json` — user-setting keys placed in `~/.copilot/config.json` are ignored.
+
+> **Vim mode (v1.0.85+)**: Modal editing is available to everyone. Turn it on with `/vim` in a session, or set `editorMode` to `vim` in your settings for modal editing in the composer, with the current mode shown while you type.
 
 > **Session restore after a crash (v1.0.81+)**: If the CLI is interrupted unexpectedly — a crash or a machine restart — startup now offers to restore any sessions that were still open, so you don't have to reopen each terminal by hand.
 
@@ -457,7 +465,7 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. More recently, **GPT-6 Sol**, **GPT-6 Luna** (v1.0.89+), **Claude Opus 5.5**, **Claude Fable 5.1** (v1.0.83+), **GPT-6 Astra** (v1.0.85+), **GPT-6.1 Sol** (v1.0.90+), and **Claude Haiku 5.5** (v1.0.94+) have all been added to the model picker. The recommended model list was updated (v1.0.93+) to prioritize **GPT-6.1 Sol**, **GPT-6 Astra/Luna**, and **Claude 5.5** models; retired models are periodically removed from the picker as newer ones become available.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -834,6 +842,15 @@ These flags apply only to the current invocation — your persisted sandbox pref
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
+
+**Command sandboxing is generally available** *(v1.0.93+)*: What was previously an experimental, opt-in feature is now available to all users via `/sandbox` and `--sandbox`. The sandbox isolates shell commands at the OS level, restricting filesystem and network access to what the session has been granted. Related sandbox improvements since v1.0.82 include:
+
+- `copilot sandbox ca` commands (v1.0.91+) to check, create, trust, and rotate the proxy certificate authority used for sandboxed network interception, including unattended Windows setup. `/sandbox ca install` is now split into separate `create` and `trust` subcommands.
+- `copilot config` supports `sandbox` credential `injectHosts` keys (v1.0.95+), with shell completion in Bash, Zsh, and Fish, for configuring which hosts receive injected credentials inside the sandbox.
+- Sandboxed shells withhold the ambient `GITHUB_TOKEN` by default unless explicitly configured (v1.0.92+).
+- Sandbox local-network allowlists now include `localhost` and loopback hosts by default (v1.0.93+).
+- Linux sandboxing requires `slirp4netns`, `nsenter`, `iptables`, `ip6tables`, `iptables-restore`, and `ip6tables-restore` on `PATH` (v1.0.83+); install them if sandboxed commands fail to launch. Proxy mode additionally requires util-linux 2.35+ and `/dev/net/tun` access.
+- On macOS and Linux, sandboxed commands can no longer reach services running on your machine by default, including a local server the command itself starts — turn on **Allow local network** in `/sandbox` to restore this (v1.0.83+).
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
 
