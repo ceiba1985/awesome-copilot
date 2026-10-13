@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-13
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -434,6 +434,17 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
+**`copilot config` CLI subcommands** *(v1.0.92+)*: Instead of hand-editing `config.json` or `settings.json`, use `copilot config` to list, read, set, and remove settings directly from the command line:
+
+```bash
+copilot config list                    # list all current settings
+copilot config read effortLevel        # read a single setting's value
+copilot config set effortLevel high    # set a setting's value
+copilot config remove effortLevel      # remove a setting (revert to default)
+```
+
+This is especially useful in scripts and setup automation where you want to configure Copilot CLI without writing JSON by hand. As of v1.0.96, model IDs passed to `/model` and `copilot config model` are matched case-insensitively and saved in their canonical form.
+
 > **Session restore after a crash (v1.0.81+)**: If the CLI is interrupted unexpectedly — a crash or a machine restart — startup now offers to restore any sessions that were still open, so you don't have to reopen each terminal by hand.
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
@@ -457,7 +468,7 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, and **Gemini 3.7 Flash** (v1.0.81+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), **GPT-6.1 Sol** (v1.0.90+), **GPT-6 Astra/Luna**, and **Claude Haiku 5.5** (v1.0.94+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. As of v1.0.93, the model picker's recommended list prioritizes GPT-6.1 Sol, GPT-6 Astra/Luna, and Claude 5.5 models.
 
 **Plan mode model** *(v1.0.74+)*: When using plan mode (which blocks file mutations and keeps changes in a planning phase), you can assign a *separate* model specifically for planning — different from your regular session model. This lets you use a fast, cost-effective model for plan drafting while keeping a more capable model on standby for the implementation phase:
 
@@ -763,7 +774,7 @@ Use `/autopilot` when you want to flip between supervised and unsupervised opera
 
 > **Enhanced autopilot (v1.0.64+)**: When autopilot mode is active — including when launched with `--autopilot` at startup or during automatic continuation turns — the agent automatically handles elicitation dialogs, `ask_user` prompts, sampling requests, and permission prompts without surfacing them as interactive dialogs. This means long-running automated sessions can proceed end-to-end without manual confirmation steps.
 
-> **Auto allow-all mode (v1.0.69+)**: In addition to the standard allow-all mode (which approves everything), the CLI now supports an **auto allow-all** mode that uses an LLM judge to evaluate each tool request. When enabled, the judge automatically approves requests it evaluates as acceptable, and asks you for manual confirmation only for requests it considers risky. This gives you a middle ground between full autopilot and fully supervised operation — most routine actions proceed automatically while unusual or potentially dangerous actions still surface for your review. As of v1.0.69-3, this mode requires experimental features to be enabled — use `/experimental on` or start the CLI with `--experimental` — then activate it with `/allow-all auto`. The previous `AUTO_APPROVAL` environment variable approach has been removed in favour of experimental mode.
+> **Auto allow-all mode, now called Assisted Permissions (v1.0.69+, renamed ~v1.0.93+)**: In addition to the standard allow-all mode (which approves everything), the CLI supports an **auto allow-all** mode — officially branded **Assisted Permissions** in recent releases — that uses an LLM judge to evaluate each tool request. When enabled, the judge automatically approves requests it evaluates as acceptable, and asks you for manual confirmation only for requests it considers risky. This gives you a middle ground between full autopilot and fully supervised operation — most routine actions proceed automatically while unusual or potentially dangerous actions still surface for your review. Activate it with `/allow-all auto`. The session timeline now shows whether you, Assisted Permissions, enterprise policy, or an unattended fallback made each permission decision, making it easier to audit how a given action was approved. Enterprises can disable Assisted Permissions via managed policy, forcing sessions into plain **Manual Approval** mode instead.
 
 > **Read-only `gh` CLI commands (v1.0.46+)**: Read-only `gh` commands — such as `gh issue list`, `gh pr view`, `gh run status`, and other commands that don't write to GitHub — are **automatically approved** without a permission prompt. Only commands that write to GitHub (like creating issues, merging PRs) still require explicit approval. This reduces friction during exploratory sessions where you frequently check issue or PR status.
 
@@ -834,6 +845,16 @@ These flags apply only to the current invocation — your persisted sandbox pref
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
+
+**`/add-dir` grants sandbox access** *(v1.0.96+)*: When the sandbox is enabled, running `/add-dir <path>` now also grants the sandbox access to that directory for the current session, in addition to adding it to the agent's working context. This means you no longer need to separately configure sandbox path access when you add a directory mid-session.
+
+```
+/add-dir ../shared-libs    # add to context and grant sandbox access for this session
+```
+
+The `--interactive` sandbox settings dialog *(v1.0.96+)* can also suggest possible environment secrets detected in your project and let you add masking hosts before saving, so secrets are less likely to leak into sandboxed command output.
+
+The `--context` flag (`-C` is reserved for changing directory) now applies consistently to new and resumed ACP sessions *(v1.0.95+)*, instead of silently falling back to the default or a previously saved context tier.
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
 

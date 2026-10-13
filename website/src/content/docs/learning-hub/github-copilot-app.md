@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-13
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -98,6 +98,18 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 ### Requesting Code Reviews
 
 From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+
+### Organization Plugin Marketplaces
+
+*(v1.1.28+)* The **Customize** page now includes a **From your organization** tab that shows plugins your organization provides whenever your enterprise manages a plugin marketplace. This makes it easier to find and install approved custom agents, skills, and MCP servers alongside the official and community plugin catalogs, without needing a separate link from an administrator.
+
+### Custom Agent Next Steps
+
+*(v1.1.28+)* Custom agents can now suggest next steps after their final response. When an agent proposes a follow-up action, you get a pre-filled, editable prompt that lets you switch to another agent to continue the work—reviewing and adjusting the prompt before sending it. This is useful for handoffs between specialized agents, such as moving from a planning agent to an implementation agent.
+
+### Auto Mode Explainability
+
+*(v1.1.28+)* When using **Auto** model selection, the conversation now shows why Auto chose a given model, displayed alongside the model name. This makes it easier to understand the routing decision—for example, whether a request was escalated to a more capable model because of its complexity—instead of only seeing which model answered.
 
 ## Who is the Copilot app for?
 
