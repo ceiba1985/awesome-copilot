@@ -25,6 +25,10 @@ Essential concepts to tailor GitHub Copilot beyond its default experience. Start
 and work through the full track to master every customization primitive. For delegation
 and orchestration patterns, continue with [Agents and Subagents](agents-and-subagents/).
 
+VS Code's agent sessions now run on the same Copilot SDK as the Copilot app and Copilot CLI. See
+[VS Code Agent Host and the Copilot Harness](vscode-copilot-harness-and-agent-host/) to understand
+the shared runtime, sandboxing, and enterprise managed settings that apply across all three surfaces.
+
 ## Reference
 
 Quick-lookup resources to keep handy while you work. Browse the

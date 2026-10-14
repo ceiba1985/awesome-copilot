@@ -3,7 +3,7 @@ title: 'Automating with Hooks'
 description: 'Learn how to use hooks to automate lifecycle events like formatting, linting, and governance checks during Copilot agent sessions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-13
 estimatedReadingTime: '8 minutes'
 tags:
   - hooks
@@ -139,6 +139,24 @@ EOF
 ```
 
 > **How it works**: If your hook writes `{"additionalContext": "..."}` to stdout and exits with code `0`, the text is prepended to the model prompt for this turn. The hook can also write both `additionalContext` and `response` — if `response` is present, that wins and the model call is skipped.
+
+### Agent-Scoped Hooks *(v1.0.97+)*
+
+Custom agents can declare their own hooks directly in frontmatter, scoped only to sessions running that agent. This lets a specific agent enforce its own lifecycle automation—such as a stricter `preToolUse` policy or a dedicated `sessionStart` context injector—without affecting every other agent or session in the repository:
+
+```yaml
+---
+name: 'Release Manager'
+description: 'Automates release preparation with strict pre-flight checks'
+hooks:
+  preToolUse:
+    - type: command
+      bash: ./scripts/check-release-branch.sh
+      timeoutSec: 10
+---
+```
+
+Agent-scoped hooks are merged with repository-level hooks from `.github/hooks/*.json` and any active plugin hooks, so you can layer a general-purpose hook (e.g., linting) with an agent-specific hook (e.g., release gating) without duplicating configuration.
 
 ### Extension Hooks Merging
 

@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-13
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -675,7 +675,7 @@ Use `/diagnose` when a session is behaving unexpectedly — it inspects session 
 
 **Shell command history in normal mode** (v1.0.65+): The **↑/↓** arrow keys and **Ctrl+R** reverse search now include past shell commands (commands run with `!`) while you are in normal (non-shell) input mode. Previously you had to type `!` to enter shell mode before history worked. Now you can recall and re-run a shell command without switching modes first — useful for quickly repeating a build, test, or diagnostic command from earlier in the session.
 
-**Inline image rendering** (v1.0.64+): The CLI can display images inline in the terminal when your terminal supports it. If an MCP tool, agent, or attachment returns an image, it is rendered directly in the conversation timeline rather than shown as a file path or URL. This works in terminals with image protocol support (such as iTerm2, Kitty, Wezterm, and tmux with appropriate configuration).
+**Inline image rendering** (v1.0.64+): The CLI can display images inline in the terminal when your terminal supports it. If an MCP tool, agent, or attachment returns an image, it is rendered directly in the conversation timeline rather than shown as a file path or URL. This works in terminals with image protocol support (such as iTerm2, Kitty, Wezterm, and tmux with appropriate configuration). *(Updated in v1.0.97+)*: Inline images now render by default on supported terminals without enabling experimental mode — use `/settings inlineImages false` to turn them off.
 
 The `/ask` command lets you ask a quick question without affecting your conversation history. The current session context is preserved, so you can use it for one-off lookups without derailing an ongoing task. Responses are rendered as full markdown, including tables and formatted links:
 
@@ -833,6 +833,18 @@ These flags apply only to the current invocation — your persisted sandbox pref
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
+**`copilot sandbox ca` commands** *(v1.0.91+)*: Manage the proxy certificate authority trust required for TLS-intercepting sandboxed network access, including unattended setup on Windows:
+
+```bash
+copilot sandbox ca check    # verify current CA trust status
+copilot sandbox ca create   # create a new CA (replaces the old `/sandbox ca install`)
+copilot sandbox ca trust    # trust the CA (replaces the old `/sandbox ca install`)
+copilot sandbox ca rotate   # rotate the CA
+copilot sandbox ca remove   # remove CA trust
+```
+
+Command sandboxing is now available to all users via `/sandbox` and `--sandbox` *(v1.0.93+)*, and the sandbox local-network allowlist automatically includes `localhost` and loopback hosts so local development servers keep working without extra configuration.
+
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
@@ -867,6 +879,25 @@ copilot --config-dir ~/.my-copilot-config
 ```
 
 Set `COPILOT_HOME` in your shell profile to use a custom config directory across all sessions. This is especially useful when running multiple Copilot configurations for different projects or teams.
+
+**`copilot config` subcommands** *(v1.0.92+)*: Instead of editing `config.json` by hand, use the `copilot config` subcommand to list, read, set, and remove settings directly from the terminal:
+
+```bash
+copilot config list                  # show all current settings
+copilot config get effortLevel       # read a single setting
+copilot config set effortLevel high  # update a setting
+copilot config unset effortLevel     # remove a setting override
+```
+
+This is useful for scripting environment setup or CI pipelines that need to configure the CLI without writing to `config.json` directly.
+
+**`--mcp-github-auth` flag** *(v1.0.90+)*: Scopes your GitHub account authentication to only the MCP server origins you explicitly approve, instead of sharing your full GitHub credentials with every connected MCP server:
+
+```bash
+copilot --mcp-github-auth
+```
+
+This reduces the blast radius if an MCP server is misconfigured or compromised, since it only receives the GitHub scopes it needs rather than your entire authenticated session.
 
 ### Shell Completion
 

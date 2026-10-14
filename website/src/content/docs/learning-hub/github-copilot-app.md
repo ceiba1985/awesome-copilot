@@ -15,6 +15,7 @@ relatedArticles:
   - ./using-copilot-coding-agent.md
   - ./agentic-workflows.md
   - ./what-are-agents-skills-instructions.md
+  - ./vscode-copilot-harness-and-agent-host.md
 prerequisites:
   - Understanding of GitHub Copilot agents
   - Copilot Pro, Pro+, Business, or Enterprise plan
