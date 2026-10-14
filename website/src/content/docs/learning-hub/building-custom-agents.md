@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-10-14
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -84,6 +84,8 @@ reasoningEffort: high
 tools: ['codebase', 'terminal', 'github']
 ---
 ```
+
+**hooks** *(v1.0.97+)*: Declare agent-scoped hooks directly in the frontmatter using the same event names and command/http hook format as repository-level `hooks.json` files. These hooks only run while this specific agent is active — useful for guardrails tied to one persona, such as always running a security scanner after a security-focused agent edits a file, without affecting other agents. See [Automating with Hooks](../automating-with-hooks/#agent-scoped-hooks-v1097) for details.
 
 **tools** (recommended): An array of built-in tools and MCP servers the agent can access. Common tools include:
 

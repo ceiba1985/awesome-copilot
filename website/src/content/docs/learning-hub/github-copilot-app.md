@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-14
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -98,6 +98,18 @@ Agent Merge also understands **stacked pull requests**: it shows a stack summary
 ### Requesting Code Reviews
 
 From the app, you can request a Copilot code review on a pull request—and re-request a review even from reviewers who already responded—without leaving the session. This keeps the review loop inside the same workspace where the change was made.
+
+### Plugin Marketplace from Your Organization
+
+**"From your organization" tab** *(app v1.1.27+)*: When your enterprise manages a plugin marketplace, Customize shows a dedicated **"From your organization"** tab listing the plugins your organization provides, alongside the community `awesome-copilot` marketplace and the official `copilot-plugins` marketplace. This tab uses one searchable catalog with compact rows or cards, marketplace filtering, and publisher artwork, making it easy to find organization-approved plugins without leaving the app.
+
+### Agent Handoffs and Rich Media
+
+**Suggested next steps** *(app v1.1.28+)*: Custom agents can suggest next steps after their final response, letting you switch to a different agent with a pre-filled, editable prompt that you review before sending — useful for multi-stage workflows where one agent's output naturally feeds into another agent's task.
+
+**Video attachments** *(app v1.1.27+)*: Video attachments now appear alongside images in the conversation's media grid, with preview and playback support — useful for sharing recordings of bugs or desired behavior directly in a session.
+
+**Artifact version history** *(app v1.1.27+)*: The artifact editor now tracks version history, so you can view and preview previous versions of an edited artifact (such as a generated document or diagram) instead of only seeing the latest version.
 
 ## Who is the Copilot app for?
 

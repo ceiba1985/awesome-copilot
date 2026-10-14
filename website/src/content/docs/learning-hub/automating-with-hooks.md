@@ -3,7 +3,7 @@ title: 'Automating with Hooks'
 description: 'Learn how to use hooks to automate lifecycle events like formatting, linting, and governance checks during Copilot agent sessions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-14
 estimatedReadingTime: '8 minutes'
 tags:
   - hooks
@@ -143,6 +143,26 @@ EOF
 ### Extension Hooks Merging
 
 When multiple IDE extensions (or a mix of extensions and a `hooks.json` file) each define hooks, all hook definitions are **merged** rather than the last one overwriting the others. This means you can layer hooks from different sources—a project's `.github/hooks/` file, an extension you have installed, and a personal settings file—and all of them will fire for the relevant events.
+
+### Agent-Scoped Hooks (v1.0.97+)
+
+You can declare hooks that only run for a specific custom agent, instead of applying to every session. Add a `hooks` block directly to an agent's YAML frontmatter:
+
+```yaml
+---
+name: 'Security Reviewer'
+description: 'Expert security auditor that reviews code for OWASP vulnerabilities'
+model: Claude Sonnet 4
+tools: ['codebase', 'terminal', 'github']
+hooks:
+  postToolUse:
+    - type: command
+      bash: './scripts/security-scan.sh'
+      matcher: '^edit$'
+---
+```
+
+Agent-scoped hooks use the same event names, matcher syntax, and command/http hook types as repository-level hooks in `hooks.json` — the only difference is they only fire while that specific agent is active. This is useful for guardrails that only make sense for one persona, such as a security-focused agent that always runs a scanner after edits, without forcing that same check on every other agent in the repository. Agent-scoped hooks are merged with any repository-level or plugin-provided hooks that also apply to the session.
 
 ### Cross-Platform Event Name Compatibility
 
