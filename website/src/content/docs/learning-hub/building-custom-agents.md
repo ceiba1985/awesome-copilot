@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-09
+lastUpdated: 2026-10-15
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -96,6 +96,47 @@ tools: ['codebase', 'terminal', 'github']
 | `edit` | Modify files in the workspace |
 
 For MCP server tools, reference them by server name (e.g., `postgres`, `docker`). See [Understanding MCP Servers](../understanding-mcp-servers/) for details.
+
+**model as a fallback list** *(v1.0.83+)*: Instead of a single model name, `model` can be an array of models tried in order until one is available to the current user:
+
+```yaml
+---
+name: 'Release Manager'
+description: 'Automates release preparation'
+model: ['Claude Opus 5', 'Claude Sonnet 4', 'GPT-4.1']
+---
+```
+
+Set `model-policy: required` alongside a model list to prevent the session from switching away from that list once one of the models is selected — useful when an agent's behavior depends on a specific model family being active throughout the conversation.
+
+**include-custom-instructions** *(v1.0.86+)*: By default, custom agents do not automatically read repository instruction files. Set `include-custom-instructions: true` in an agent's frontmatter to opt it into `AGENTS.md`, `copilot-instructions.md`, and `CLAUDE.md` alongside its own persona:
+
+```yaml
+---
+name: 'Terraform Expert'
+description: 'Infrastructure-as-code specialist for Terraform on Azure'
+model: Claude Sonnet 4
+include-custom-instructions: true
+---
+```
+
+This is useful when you want an agent to retain its specialized persona while still respecting team-wide coding standards defined at the repository level.
+
+**Agent-scoped hooks** *(v1.0.97+)*: Custom agents can declare their own `hooks` directly in frontmatter, scoping lifecycle automation (see [Automating with Hooks](../automating-with-hooks/)) to only that agent instead of applying it to every session:
+
+```yaml
+---
+name: 'Release Manager'
+description: 'Automates release preparation'
+model: Claude Sonnet 4
+hooks:
+  postToolUse:
+    - type: command
+      bash: "npx prettier --write ."
+---
+```
+
+Agent-scoped hooks are merged with repository-level `.github/hooks/*.json` definitions, so you can add agent-specific automation without affecting other agents or sessions.
 
 ### Agent Instructions
 
@@ -254,12 +295,12 @@ The agent can then query your database, analyze query plans, and suggest optimiz
 
 | Scenario | Recommended Model |
 |----------|-------------------|
-| Most demanding reasoning, security review | Claude Sonnet 5 *(v1.0.67+)* |
-| Complex reasoning, analysis | Claude Sonnet 4 |
+| Most demanding reasoning, security review | Claude Opus 5.5 *(v1.0.83+)*, Claude Sonnet 5 *(v1.0.67+)* |
+| Complex reasoning, analysis | GPT-6.1 Sol *(v1.0.90+)*, Claude Sonnet 4 |
 | Code generation, tool-driven agentic work | GPT-5.6 *(v1.0.70+)* |
 | Code generation, refactoring | GPT-4.1 |
 | Code-specialized tasks, large context | kimi-k2.7-code *(v1.0.68+)*, kimi-k3 *(v1.0.79+)* |
-| Quick analysis, simple tasks | Claude Haiku or GPT-4.1-mini |
+| Quick analysis, simple tasks | Claude Haiku 5.5 *(v1.0.94+)* or GPT-4.1-mini |
 | Large codebase understanding | Models with larger context windows |
 
 ### Organizing Agents in Your Repository

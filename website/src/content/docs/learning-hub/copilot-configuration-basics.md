@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-15
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -490,6 +490,17 @@ The settings dialog supports search — type to filter settings by name. Changes
 
 These flags mirror the **Repo** and **Repo (local)** scope tabs available in the `/settings` dashboard (v1.0.71+), making it easier to manage per-repository vs. user-global configuration without ambiguity. In v1.0.71+, the `/settings` dashboard also shows **Repo** and **Repo (local)** tabs alongside the existing user-level view, giving you a unified place to see which settings are applied at each layer.
 
+**`copilot config` subcommands** *(v1.0.92+)*: In addition to the interactive `/settings` dialog, you can manage settings directly from the command line — useful for scripting and CI setup:
+
+```bash
+copilot config list              # list all current settings
+copilot config get effortLevel   # read a single setting
+copilot config set effortLevel high
+copilot config remove effortLevel
+```
+
+These subcommands read and write the same configuration layers as `/settings`, so a value set with `copilot config set` is immediately reflected in the next interactive session.
+
 GitHub Copilot CLI has two commands for managing session state, with distinct behaviours:
 
 | Command | Behaviour |
@@ -832,6 +843,27 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+**`copilot sandbox ca` commands** *(v1.0.90+ as `ca install`, split into `create`/`trust` in v1.0.91+)*: Manage the proxy certificate authority that lets sandboxed network traffic be inspected. The `/sandbox ca install` command was replaced by separate `create` and `trust` subcommands:
+
+```bash
+copilot sandbox ca check    # check current CA trust status
+copilot sandbox ca create   # generate a new proxy CA certificate
+copilot sandbox ca trust    # trust the CA on this machine
+copilot sandbox ca rotate   # rotate the CA certificate
+copilot sandbox ca remove   # remove the CA certificate
+```
+
+These commands also support unattended setup on Windows, making them suitable for scripted onboarding or CI images that need sandboxed network access preconfigured.
+
+**`--trust-folder` flag** *(v1.0.99+)*: Trust the current folder for a single one-off prompt-mode session, without persisting that trust to your global configuration:
+
+```bash
+copilot --trust-folder -p "Run the full test suite and fix any failures"
+echo "Summarize this diff" | copilot --trust-folder -p
+```
+
+This is useful for CI or scripted invocations with `-p` or piped stdin where you want to skip the interactive trust prompt for a single run, without marking the folder as trusted for future sessions.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
