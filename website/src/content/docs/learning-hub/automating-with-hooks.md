@@ -3,7 +3,7 @@ title: 'Automating with Hooks'
 description: 'Learn how to use hooks to automate lifecycle events like formatting, linting, and governance checks during Copilot agent sessions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-16
 estimatedReadingTime: '8 minutes'
 tags:
   - hooks
@@ -215,6 +215,8 @@ Hooks support two types: `"command"` for running local shell scripts, and `"http
 **env**: Additional environment variables merged with the existing environment.
 
 > **New (v1.0.81+)**: Hooks can now receive the current OpenTelemetry trace context so they can emit correlated spans. Hook inputs gain a `traceparent` field (plus `tracestate` when the span carries vendor-specific state); command hooks also receive these as environment variables, making it possible to link hook telemetry with the rest of a session's trace.
+
+> **New (v1.0.97+)**: Custom agents can declare **agent-scoped hooks** directly in their own definition, so a hook runs only while that agent is active. Use this to attach guardrails (for example, a `preToolUse` check) to a single specialized agent without affecting the rest of the session. In autopilot mode, a `preToolUse` hook that returns an `"ask"` decision is now denied rather than stopping on a permission dialog nobody is watching.
 
 #### HTTP hooks (`type: "http"`)
 
