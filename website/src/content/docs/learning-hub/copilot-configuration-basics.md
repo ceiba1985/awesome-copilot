@@ -833,6 +833,10 @@ These flags apply only to the current invocation — your persisted sandbox pref
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
+**`assistedApprovalInstructions` setting** *(v1.0.101+)*: Provide guidance that Assisted Permissions uses when deciding whether to confirm or allow an action, so the permission judge reflects your team's conventions. Enterprise-managed ask permissions in Assisted mode (v1.0.100+) now allow safe actions without unnecessary prompts.
+
+**Path-specific instructions** *(v1.0.100+)*: Instruction files in the repository root `.github/instructions` are applied automatically when the agent reads or edits a file matching their `applyTo` pattern.
+
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
