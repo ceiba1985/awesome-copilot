@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-10-25
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -832,6 +832,12 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+**Sandbox updates** *(v1.0.100+)*: `/sandbox` can keep sandboxing enabled for the current session only, and sandboxes now allow local network access by default so commands can reach localhost and private-network services. Saved sandbox settings and `--sandbox`/`--no-sandbox` are honored by ACP sessions *(v1.0.103+)*. Sandboxed traffic honors `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`, and `ALL_PROXY`.
+
+**Assisted permissions** *(v1.0.101+)*: The `assistedApprovalInstructions` setting lets you guide how Assisted Permissions makes confirmation decisions.
+
+**Path-specific instructions** *(v1.0.100+)*: Files in the repository root `.github/instructions` are applied automatically when the agent reads or edits a matching file.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 

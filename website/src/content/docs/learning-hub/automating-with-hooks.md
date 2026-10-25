@@ -3,7 +3,7 @@ title: 'Automating with Hooks'
 description: 'Learn how to use hooks to automate lifecycle events like formatting, linting, and governance checks during Copilot agent sessions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-10-25
 estimatedReadingTime: '8 minutes'
 tags:
   - hooks
@@ -83,7 +83,7 @@ The configuration defines which events trigger which commands:
 
 ## Hook Events
 
-Hooks can trigger on several lifecycle events:
+Hooks can trigger on several lifecycle events. Custom agents can also declare their own **agent-scoped hooks** declaratively *(v1.0.97+)*, so a hook runs only when that agent is active.
 
 | Event | When It Fires | Common Use Cases |
 |-------|---------------|------------------|
