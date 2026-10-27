@@ -237,6 +237,8 @@ copilot plugin uninstall my-plugin
 
 > **Auto-update for first-party plugins** *(v1.0.78+)*: Plugins sourced from the official `copilot-plugins` marketplace automatically update to their latest version at the start of each session. You do not need to run `copilot plugin update` for first-party plugins — updates are applied silently on startup. Community plugins from `awesome-copilot` and other marketplace registries still require a manual `copilot plugin update` command.
 
+> **Plugin source updates** *(v1.0.100–v1.0.102)*: Verified skills and plugins can be installed from GitHub install links with `copilot plugin install "ghapp://air/install?..."`. Plugin marketplaces accept `git-subdir` sources and long plugin descriptions, and plugins from trusted repositories install and update automatically before chat runs. The built-in browser plugin is now named `browser-use`.
+
 ### Enabling and Disabling Plugin Components
 
 > **Breaking change (v1.0.81+)**: The `/plugins` command has been **removed**. Its functionality moved to dedicated commands: `/plugin` (plugin dashboard), `/mcp` (MCP servers), and `/skills` (skills), with `/subagents` for custom agents and `/instructions` for instructions.

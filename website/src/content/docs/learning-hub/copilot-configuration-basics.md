@@ -831,6 +831,12 @@ These flags apply only to the current invocation — your persisted sandbox pref
 
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
+**Local network access and session-only sandboxing** *(v1.0.100+)*: The sandbox now allows local network access by default, so sandboxed commands can reach `localhost` and private-network services. Use `/sandbox` to keep sandboxing enabled for the current session without enabling it globally. Sandboxed traffic also honors `HTTPS_PROXY`, `HTTP_PROXY`, `NO_PROXY`, and `ALL_PROXY` from the host (v1.0.100–v1.0.102).
+
+**Privacy and prompt-mode flags** *(v1.0.100+)*: `--disable-client-telemetry` turns off client telemetry uploads, and `--trust-folder` trusts the current folder for one-off `-p` or piped-stdin sessions.
+
+**`assistedApprovalInstructions` setting** *(v1.0.101+)*: Adds your own guidance to help Assisted Permissions decide whether to approve an action.
+
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
