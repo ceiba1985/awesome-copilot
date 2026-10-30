@@ -151,6 +151,9 @@ Copilot offers many [options to control permissions][permissions-docs], includin
 | — | `--allow-all-paths` | Skip path verification and allow access to any file location. |
 | — | `--allow-url=URL` / `--deny-url=URL` | Allow or block specific URLs/domains for `web_fetch` and shell network calls. |
 
+> [!NOTE]
+> **Assisted Permissions** *(v1.0.104+, no experimental mode required)* use a judge to help decide on permission confirmations. Use the `assistedApprovalInstructions` setting *(v1.0.101+)* to guide those decisions. Sandboxed commands also honor `NO_PROXY` and `ALL_PROXY` proxy settings *(v1.0.102+)*.
+
 > [!WARNING]
 > Enabling all tools (commonly referred to as **YOLO mode**) gives Copilot unrestricted ability to read, modify, and execute files, run shell commands, and call out to MCP servers without asking. A misinterpreted prompt or a prompt-injection attack via fetched content can result in data loss, leaked secrets, or destructive commands. Only use YOLO mode in [trusted, sandboxed environments][risk-mitigation] such as a container or disposable VM, and never in a directory containing credentials or unreviewed code.
 

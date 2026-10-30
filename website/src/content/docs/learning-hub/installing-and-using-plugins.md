@@ -195,6 +195,10 @@ Pinning to a SHA guarantees that everyone on the team installs plugins from exac
 - **Change control** — review and approve plugin updates before rolling them out team-wide
 - **Stability** — prevent breaking changes in upstream marketplaces from impacting your team without notice
 
+### Marketplace Source Types
+
+Plugin marketplaces can also reference plugins in a repository subdirectory using `git-subdir` sources, and accept long plugin descriptions *(v1.0.102+)*. Team-assigned plugins can be installed from Team-defined GitHub marketplaces *(v1.0.101+)*.
+
 ## Installing Plugins
 
 ### From Copilot CLI
