@@ -3,7 +3,7 @@ title: 'Defining Custom Instructions'
 description: 'Learn how to create persistent, context-aware instructions that guide GitHub Copilot automatically across your codebase.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-07-01
+lastUpdated: 2026-11-04
 estimatedReadingTime: '8 minutes'
 tags:
   - instructions
@@ -141,6 +141,8 @@ applyTo: '**'
 
 **Expected Result**:
 When you work on a file matching the pattern, Copilot incorporates that instruction's context into suggestions and chat responses automatically.
+
+> **Tip (CLI v1.0.100+):** Path-specific instruction files in the repository's root `.github/instructions` folder are applied automatically when the agent reads or edits a matching file.
 
 ## Composing Instructions with @-style Imports
 
