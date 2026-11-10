@@ -70,6 +70,8 @@ MCP servers are configured per-workspace. GitHub Copilot CLI discovers server de
 | `.vscode/mcp.json` | VS Code workspace | VS Code–compatible workspace config |
 | `devcontainer.json` | Dev container | Available when running inside a container |
 
+> **Note (CLI v1.0.108+)**: If a directory has both `.mcp.json` and `.github/mcp.json`, the `.github/mcp.json` file is ignored; the two files are not merged. Interactive CLI sessions also pass local MCP server `env` values literally, so use `${NAME}` to reference a host environment variable.
+
 > **Security**: Workspace MCP servers are loaded **only after folder trust is confirmed**. If you haven't explicitly trusted a folder, servers defined in its config files won't start — protecting you from malicious MCP server configurations in untrusted repositories.
 
 Example `.mcp.json` or `.vscode/mcp.json`:
