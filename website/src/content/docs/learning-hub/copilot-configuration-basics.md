@@ -523,6 +523,8 @@ The `/session delete` command removes sessions you no longer need:
 /session delete-all          # delete all sessions
 ```
 
+In v1.0.110+, `/session prune` (and its dry run) skips sessions that are open in other processes and reports how many were skipped.
+
 You can also press **x** on a highlighted session in the session picker (`--resume`) to delete it directly from the list.
 
 In the session picker, press **`s`** to cycle the sort order: relevance, last used, created, or name. The picker also shows the branch name and idle/in-use status for each session.
@@ -702,6 +704,8 @@ The `/context` command shows a visualization of the current conversation's conte
 ```
 /context
 ```
+
+In v1.0.110+, `/context` reports loaded custom instructions as a separate token count rather than folding them into the System Prompt total.
 
 The `/usage` command displays session metrics such as the number of tokens consumed, API calls made, and any quota information for the current session. In v1.0.64+, `/usage` also shows per-model token totals when you have used multiple models in a session:
 
