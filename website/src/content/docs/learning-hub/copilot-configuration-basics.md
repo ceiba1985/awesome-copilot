@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-11-15
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -832,6 +832,14 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+**Sandbox networking on macOS** *(v1.0.112+)*: Sandbox host rules block direct TCP connections to local ports (for example, a build client reaching its daemon). `localhost` stays reachable only through the local proxy, as HTTP or a CONNECT tunnel from a proxy-aware client. Run `copilot help sandbox` for details.
+
+**Remote session hosting** *(v1.0.111+)*: Use `--host-allow-session-creation` to let remote clients create sessions on a CLI host for a single launch without changing your saved settings. Sessions started with `/new` or from the Sessions tab can also be controlled from GitHub when remote sessions are enabled.
+
+**Enterprise permission rules** *(v1.0.111+)*: Enterprise-managed Shell, Bash, and PowerShell permission rules now support regular expressions. Plugin hooks can also use `${COPILOT_PLUGIN_ROOT}` in their working directories and environment values.
+
+**Session AI credit limits** *(v1.0.110+)*: `/compact` respects the session AI credit limit, and previously used AI credits count toward the limit when you resume a session.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
