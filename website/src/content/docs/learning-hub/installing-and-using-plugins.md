@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-28
+lastUpdated: 2026-11-18
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -238,6 +238,8 @@ copilot plugin uninstall my-plugin
 > **Auto-update for first-party plugins** *(v1.0.78+)*: Plugins sourced from the official `copilot-plugins` marketplace automatically update to their latest version at the start of each session. You do not need to run `copilot plugin update` for first-party plugins — updates are applied silently on startup. Community plugins from `awesome-copilot` and other marketplace registries still require a manual `copilot plugin update` command.
 
 ### Enabling and Disabling Plugin Components
+
+> **CLI updates (v1.0.85+)**: `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` accept `--json`, and `copilot plugin`, `copilot mcp`, and `copilot skill` each gain `enable` and `disable` subcommands. The cross-kind `--kind`, `--scope`, `--mcp`, and `--skill` flags on `copilot plugins` were removed. The built-in browser plugin was renamed **browser-use** (v1.0.100+); existing preferences keep working.
 
 > **Breaking change (v1.0.81+)**: The `/plugins` command has been **removed**. Its functionality moved to dedicated commands: `/plugin` (plugin dashboard), `/mcp` (MCP servers), and `/skills` (skills), with `/subagents` for custom agents and `/instructions` for instructions.
 

@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-11-18
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -435,6 +435,8 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
 > **Session restore after a crash (v1.0.81+)**: If the CLI is interrupted unexpectedly — a crash or a machine restart — startup now offers to restore any sessions that were still open, so you don't have to reopen each terminal by hand.
+
+> **Managing settings from the CLI (v1.0.85+/v1.0.92+)**: `/config` opens a sidebar configuration screen, and `copilot config` subcommands list, read, set, and remove settings without editing `config.json` by hand. For one-off non-interactive runs, `--trust-folder` (v1.0.100+) trusts the folder for `-p` or piped-stdin sessions, and `--max-ai-credits` limits AI credits for the whole session, including subagents (v1.0.112+). Recent releases also add models such as Claude Fable 5.2 (v1.0.109+) and GPT-6.1 Terra (v1.0.106+), and `/code` (v1.0.106+) opens the current session in VS Code.
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
