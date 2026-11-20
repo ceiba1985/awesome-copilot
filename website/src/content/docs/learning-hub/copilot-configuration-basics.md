@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-19
+lastUpdated: 2026-11-20
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -832,6 +832,10 @@ These flags apply only to the current invocation — your persisted sandbox pref
 > **Breaking change (v1.0.79)**: The setting was renamed from `allowDevToolCaches` to `allowDevToolAccess`. If you previously set `allowDevToolCaches` to `false` to opt out, update your `settings.json` to use `allowDevToolAccess` — the old key is silently ignored.
 
 **Sandbox auth settings** *(v1.0.79-8+, breaking change)*: The `/sandbox` configuration dialog now groups git, `gh`, and (on macOS) keychain settings under a new **Auth** tab. The underlying settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no automatic migration — the old keys are silently ignored in settings files, and SDK requests that still send them are rejected as invalid. Update any saved configuration to the new key names.
+
+**Sandbox network and extension rules** *(v1.0.110+)*: Sandbox host allow and deny rules in settings now accept IPv4/IPv6 CIDR ranges, and a **Sandbox extensions** setting runs extension processes inside the sandbox. On Windows, `sandbox.userPolicy.filesystem.enumeratePaths` grants enumerate-only directory access. On macOS, sandbox host rules block direct TCP connections to local ports (for example a build client reaching its daemon); localhost is reachable only through the local proxy. Run `copilot help sandbox` for details. Enterprise administrators can also use regular expressions in managed Shell, Bash, and PowerShell permission rules (v1.0.111+).
+
+**`/code` and `/index` commands** *(v1.0.110+)*: `/code` opens the current CLI session in VS Code. `/index` commands manage shared tgrep code indexing, which is enabled by default for eligible repositories to speed up code search.
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
