@@ -835,6 +835,17 @@ These flags apply only to the current invocation — your persisted sandbox pref
 
 **`worktreeBaseRef` setting** *(v1.0.79-8+)*: Controls whether `/worktree`, `/worktree new`, and the `--worktree` startup flag create the new worktree from `HEAD` or from the remote default branch. All three now default to `HEAD`; previously `--worktree` defaulted to starting from the remote default branch. Set this in `/settings` if you want worktrees to branch from the remote default instead.
 
+**Recent CLI additions** *(v1.0.115)*:
+
+- **Sandbox policy:** `/sandbox policy` shows the GitHub account that sandboxed `gh` commands use. Windows sandbox package queries are now enabled by default (set `sandbox.userPolicy.capabilities` to `[]` to opt out), and on macOS `sandbox.userPolicy.seatbelt.extraMachLookups` allows specific Mach service lookups without enabling Keychain access.
+- **Custom provider models:** Press `Ctrl+X` then `A` in `/model` to add (and optionally switch to) a custom provider model in local sessions, and manage configured provider models directly from the picker.
+- **Timeline timestamps:** Set `showTimelineTimestamps` to show start times, end times, and elapsed durations on timeline items.
+- **Empty `--available-tools`:** `--available-tools=` (an empty value) now gives the model no tools, as the flag's help describes, instead of all tools.
+- **`--max-ai-credits` with `--resume`/`--continue`:** The flag now sets the resumed session's limit even when the session already had one.
+- **Lazy extension activation:** Native extensions can activate lazily when a user invokes one of their declared slash commands.
+- **`disableAllHooks`:** Hooks from managed policy still run when this setting is on.
+- **New models:** New models such as Gemini 4 Hydrogen (with Extra High reasoning where available) and MAI-Code-2-Flash appear in the `/model` picker, depending on your account.
+
 The `--attachment` flag (available in prompt mode, `-p`) lets you attach files — images or native documents — to the initial prompt in non-interactive mode:
 
 **Browser-based OAuth login** *(v1.0.77+)*: `copilot login` now defaults to the browser (web) flow on local interactive terminals. A browser tab opens, you authenticate with GitHub, and the CLI is authorized without typing a device code. On remote or headless terminals (SSH sessions, CI), device code remains the default. You can force a specific flow with `--web-flow` or `--device-code`, or choose interactively with the `/login` command:
