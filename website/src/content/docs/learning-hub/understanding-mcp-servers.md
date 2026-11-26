@@ -309,6 +309,8 @@ For example, a PostgreSQL server that can't connect because `DATABASE_URL` is no
 /mcp show postgres     # inspect a specific server
 ```
 
+**Duplicate plugin and standalone servers** (v1.0.116+): If a plugin and a standalone MCP server connect to the same endpoint, Copilot CLI warns you and shows how to disable one of them in `/mcp`, so tools aren't registered twice. Workspace `.mcp.json` and `.github/mcp.json` files are also now loaded even if they contain comments or trailing commas.
+
 **Viewing attached servers with `/mcp list`** (v1.0.69+): Use `/mcp list` to see which MCP servers are currently attached to your session and their status. Unlike `/mcp show` (which shows all configured servers), `/mcp list` focuses on what's active right now and can run **while the agent is working** — useful for checking server status mid-turn without interrupting the agent:
 
 ```
